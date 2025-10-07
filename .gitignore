@@ -1,10 +1,11 @@
 *.class
+
 bin/
 
-# Javadoc output directory (as required by assignment)
+# Javadoc output
 html/
 
-# Package Files (if using an IDE that generates jars)
+# Package Files
 *.jar
 *.war
 *.ear
@@ -12,19 +13,15 @@ html/
 # Maven
 target/
 
-# Gradle
-.gradle/
-build/
-
-# VS Code Specific Files
+# VS Code Files
 .vscode/
 
-# IntelliJ Idea Specific Files
+# IntelliJ Files
 .idea/
 *.iws
 *.iml
 *.ipr
 
-# Operating System Files
+# Other Files
 .DS_Store
 Thumbs.db
