@@ -1,0 +1,14 @@
++--------------------------------------+
+|            AuthManager               |
+|--------------------------------------|
+| - users : Map<String, User>          |
+| - loggedInUsers : Set<String>        |
+|--------------------------------------|
+| + AuthManager()                      |
+| + addUser(user : User) : void        |
+| + getUser(userId : String) : User    |
+| + login(userId : String, password : String) : boolean |
+| + logout(user : User) : void         |
+| + changePassword(user : User, oldPassword : String, newPassword : String) : boolean |
+| + isLoggedIn(userId : String) : boolean |
++--------------------------------------+
