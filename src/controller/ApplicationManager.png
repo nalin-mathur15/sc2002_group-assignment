@@ -1,0 +1,12 @@
++------------------------------------+
+|          ApplicationManager         |
++------------------------------------+
+| - applications : Map<String, InternshipApplication> |
++------------------------------------+
+| + submitApplication(Student, Internship) : boolean  |
+| + updateApplicationStatus(String, ApplicationStatus) : boolean |
+| + getApplicationsForInternship(String) : List<InternshipApplication> |
+| + getApplicationsByStudent(String) : List<InternshipApplication> |
+| + checkPlacementStatus(Student) : void              |
+| + getPendingApplications() : List<InternshipApplication> |
++------------------------------------+
