@@ -1,7 +1,7 @@
 package controller;
 
 import java.util.*;
-import model.User;
+import entity.User;
 
 public class AuthManager {
     // authenticate log in and password change
@@ -16,7 +16,7 @@ public class AuthManager {
 
     // Add user (used during initialization)
     public void addUser(User user) {
-        users.put(user.getUserId(), user);
+        users.put(user.getUserID(), user);
     }
 
     // Retrieve a user
@@ -39,7 +39,7 @@ public class AuthManager {
     // Logout
     public void logout(User user) {
         if (user != null) {
-            loggedInUsers.remove(user.getUserId());
+            loggedInUsers.remove(user.getUserID());
             System.out.println("You have been logged out.");
         }
     }
