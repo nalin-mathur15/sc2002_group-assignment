@@ -1,0 +1,15 @@
++---------------------------------------------------+
+|                InternshipManager                  |
+|---------------------------------------------------|
+| - internships : Map<String, Internship>           |
+|---------------------------------------------------|
+| + InternshipManager()                             |
+| + addInternship(internship : Internship) : void   |
+| + approveInternship(internshipId : String) : boolean |
+| + toggleVisibility(internshipId : String, visible : boolean) : boolean |
+| + getInternshipsForStudent(s : Student) : List<Internship> |
+| + applyInternship(s : Student, internshipId : String) : boolean |
+| + updateApplicationStatus(internshipId : String, studentId : String, status : String) : void |
+| + filterInternships(major : String, level : String, status : String) : List<Internship> |
+| + viewApplications(internshipId : String) : void  |
++---------------------------------------------------+
