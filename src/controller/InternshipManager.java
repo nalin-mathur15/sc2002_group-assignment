@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 import entity.*;
 import entity.Internship.InternshipLevel;
 import entity.Internship.InternshipStatus;
-import entity.InternshipApplication.ApplicationStatus;
 
 public class InternshipManager {
     // Manages listing of internships, creating, approving, and status of internship
@@ -54,26 +53,7 @@ public class InternshipManager {
                 .collect(Collectors.toList());
     }
 
-    // Student applies for internship
-    public boolean applyInternship(Student s, String internshipId) {
-        Internship i = internships.get(internshipId);
-        if (i == null || i.hidden()) {
-            System.out.println("Internship not available.");
-            return false;
-        }
-
-        if (s.getSubmittedApplicationIDs().size() >= 3) {
-            System.out.println("You have reached the maximum number of applications.");
-            return false;
-        }
-
-        s.apply(i);
-        i.addApplicant(s);
-        System.out.println("Applied for \"" + i.getTitle() + "\" successfully!");
-        return true;
-    }
-
-    // Filter internships (career staff report)
+    // Filter internships (for career staff report)
     public List<Internship> filterInternships(String major, InternshipLevel level, InternshipStatus status) {
         return internships.values().stream()
                 .filter(i -> (major == null || i.getPreferredMajor().equalsIgnoreCase(major)))
@@ -82,13 +62,13 @@ public class InternshipManager {
                 .collect(Collectors.toList());
     }
 
-    // View applications for an internship
-    public void viewApplications(String internshipId) {
-        Internship i = internships.get(internshipId);
-        if (i != null) {
-            i.printApplications();
-        } else {
-            System.out.println("Internship not found.");
-        }
+    // Get a specific internship by ID
+    public Internship getInternshipById(String internshipId) {
+        return internships.get(internshipId);
+    }
+
+    // Get all internships
+    public Collection<Internship> getAllInternships() {
+        return internships.values();
     }
 }
