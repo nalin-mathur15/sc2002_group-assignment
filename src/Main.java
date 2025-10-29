@@ -1,4 +1,3 @@
-import java.util.Scanner;
 import boundary.MainMenu;
 
 public class Main {
