@@ -1,12 +1,11 @@
 package boundary;
-import java.util.Scanner;
+
 import utility.InputService;
 
 public class MainMenu {
 	// initial command-line interface
 	public static void Start() {
 		int choice;
-		Scanner sc = new Scanner(System.in);
 		do {
 			System.out.println("Perform the following methods:");
 			System.out.println("1: Login");
@@ -25,6 +24,6 @@ public class MainMenu {
 				}
 		} while (choice < 3 && choice > 0);
 		
-		sc.close();
+		InputService.closeScanner();
 	}
 }
