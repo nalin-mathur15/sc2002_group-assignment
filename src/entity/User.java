@@ -5,11 +5,13 @@ public abstract class User {
     private final String userID;
     private String name;
     private String pwd;
+    private String email;
     private final String role;
 
-    public User(String userID, String name, String pwd, String role) {
+    public User(String userID, String name, String email, String pwd, String role) {
         this.userID = userID;
         this.name = name;
+        this.email = email;
         this.pwd = pwd;
         this.role = role;
     }
@@ -17,6 +19,7 @@ public abstract class User {
     //getters
     public String getUserID() { return userID; }
     public String getName() { return name; }
+    public String getEmail() { return email; }
     public String getRole() { return role; }
     public String getPassword() { return pwd; }
     

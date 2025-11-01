@@ -1,5 +1,6 @@
 package controller;
 
+import java.time.LocalDate;
 import java.util.*;
 import entity.*;
 import entity.Internship.InternshipLevel;
@@ -40,11 +41,12 @@ public class ApplicationManager {
 
         // Check that internship is valid
         if (internship.getStatus() != InternshipStatus.APPROVED) { System.out.println("Error: This internship is not approved for applications."); return false; }
-        if (internship.hidden()) { System.out.println("Error: This internship is not currently visible.");return false; }
+        if (!internship.isVisible()) { System.out.println("Error: This internship is not currently visible.");return false; }
         if (internship.getStatus() == InternshipStatus.FULL) { System.out.println("Error: This internship is already filled.");return false; }
 
         // Check if the deadline has passed.
-        if (new Date().after(internship.getApplicationCloseDate())) { System.out.println("Error: The application deadline for this internship has passed.");return false; }
+        LocalDate today = LocalDate.now();
+        if (today.isAfter(internship.getApplicationCloseDate())) { System.out.println("Error: The application deadline for this internship has passed.");return false; }
 
         // Check eligibility.
         int year = student.getYear();
