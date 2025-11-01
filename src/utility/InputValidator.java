@@ -3,9 +3,6 @@ package utility;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 
-/**
- * Centralized validation helpers to keep controllers/boundaries clean.
- */
 public final class InputValidator {
 
     private static final Pattern STUDENT_ID = Pattern.compile("^U\\d{7}[A-Z]$", Pattern.CASE_INSENSITIVE);
