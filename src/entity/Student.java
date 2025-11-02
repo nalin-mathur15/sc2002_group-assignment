@@ -8,8 +8,8 @@ public class Student extends User {
     private final List<String> submittedApplicationIDs;
     private String acceptedInternship;
 
-    public Student(String userID, String name, String pwd, int year, String major) {
-        super(userID, name, pwd, "Student");
+    public Student(String userID, String name, String email, String pwd, int year, String major) {
+        super(userID, name, email, pwd, "Student");
         this.year = year;
         this.major = major;
         this.submittedApplicationIDs = new ArrayList<>();

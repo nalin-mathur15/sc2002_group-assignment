@@ -9,8 +9,8 @@ public class CompanyRepresentative extends User {
     private boolean staffApproved;
     private final List<String> postedInternshipIDs;
 
-    public CompanyRepresentative(String userID, String name, String pwd, String companyname, String dep, String position) {
-        super(userID, name, pwd, "CompanyRepresentative");
+    public CompanyRepresentative(String userID, String name, String email, String pwd, String companyname, String dep, String position) {
+        super(userID, name, email, pwd, "CompanyRepresentative");
         this.company = companyname;
         this.department = dep;
         this.position = position;
