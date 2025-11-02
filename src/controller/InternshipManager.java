@@ -10,6 +10,7 @@ public class InternshipManager {
     // Manages listing of internships, creating, approving, and status of internship
 
     private Map<String, Internship> internships;
+    private static int InternshipIDGen = 1;
 
     public InternshipManager() {
         internships = new HashMap<>();
@@ -66,9 +67,21 @@ public class InternshipManager {
     public Internship getInternshipById(String internshipId) {
         return internships.get(internshipId);
     }
+    
+    public List<Internship> getInternshipsByCompany(String compName){
+    	return internships.values().stream()
+                .filter(i -> i.getCompanyName().equalsIgnoreCase(compName))
+                .collect(Collectors.toList());
+    }
 
     // Get all internships
     public Collection<Internship> getAllInternships() {
         return internships.values();
+    }
+    
+    public static int UseInternIDGen() {
+    	int old = InternshipIDGen;
+    	InternshipIDGen += 1;
+    	return old;
     }
 }

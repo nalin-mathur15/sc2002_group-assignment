@@ -1,7 +1,7 @@
 package entity;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class Internship {
@@ -21,8 +21,8 @@ public class Internship {
     private String description;
     private InternshipLevel level;
     private String preferredMajor;
-    private Date openDate;
-    private Date closeDate;
+    private LocalDate openDate;
+    private LocalDate closeDate;
     private InternshipStatus status;
     private final String employer;
     private final String companyRepresentativeID;
@@ -33,7 +33,7 @@ public class Internship {
 
     public Internship(String internshipID, String title, String description,
                       InternshipLevel level, String preferredMajor,
-                      Date openDate, Date closeDate, String companyName,
+                      LocalDate openDate, LocalDate closeDate, String companyName,
                       String companyRepID, int numberOfSlots) {
         this.internshipID = internshipID;
         this.title = title;
@@ -57,8 +57,8 @@ public class Internship {
     public String getDescription() { return description; }
     public InternshipLevel getLevel() { return level; }
     public String getPreferredMajor() { return preferredMajor; }
-    public Date getApplicationOpenDate() { return openDate; }
-    public Date getApplicationCloseDate() { return closeDate; }
+    public LocalDate getApplicationOpenDate() { return openDate; }
+    public LocalDate getApplicationCloseDate() { return closeDate; }
     public InternshipStatus getStatus() { return status; }
     public String getCompanyName() { return employer; }
     public String getCompanyRepID() { return companyRepresentativeID; }
@@ -72,8 +72,8 @@ public class Internship {
     public void setDescription(String description) { this.description = description; }
     public void setLevel(InternshipLevel level) { this.level = level; }
     public void setPreferredMajor(String preferredMajor) { this.preferredMajor = preferredMajor; }
-    public void setApplicationOpenDate(Date date) { this.openDate = date; }
-    public void setApplicationCloseDate(Date date) { this.closeDate = date; }
+    public void setApplicationOpenDate(LocalDate date) { this.openDate = date; }
+    public void setApplicationCloseDate(LocalDate date) { this.closeDate = date; }
     public void setNumberOfSlots(int numberOfSlots) { this.slots = (numberOfSlots > 10) ? 10 : numberOfSlots; }
     public void setStatus(InternshipStatus status) { this.status = status; }
     public void setHidden(boolean hide) { this.hidden = hide; }
