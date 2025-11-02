@@ -38,7 +38,7 @@ public class InternshipManager {
     public boolean toggleVisibility(String internshipId, boolean visible) {
         Internship i = internships.get(internshipId);
         if (i != null) {
-            i.setHidden(!visible);
+            i.setVisibility(visible);
             System.out.println("Visibility for \"" + i.getTitle() + "\" set to " + visible);
             return true;
         }
@@ -48,7 +48,7 @@ public class InternshipManager {
     // List internships available to a student
     public List<Internship> getInternshipsForStudent(Student s) {
         return internships.values().stream()
-                .filter(i -> !i.hidden())
+                .filter(i -> i.isVisible())
                 .filter(i -> i.getPreferredMajor().equalsIgnoreCase(s.getMajor()))
                 .filter(i -> s.getYear() >= 3 || i.getLevel() == InternshipLevel.BASIC)
                 .collect(Collectors.toList());

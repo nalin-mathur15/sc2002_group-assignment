@@ -28,7 +28,7 @@ public class Internship {
     private final String companyRepresentativeID;
     private int slots;
     private int filledSlots;
-    private boolean hidden;
+    private boolean visible;
     private final List<String> applicationIDs;
 
     public Internship(String internshipID, String title, String description,
@@ -46,7 +46,7 @@ public class Internship {
         this.companyRepresentativeID = companyRepID;
         this.slots = (numberOfSlots > 10) ? 10 : numberOfSlots;
         this.status = InternshipStatus.PENDING;
-        this.hidden = true;
+        this.visible = true;
         this.filledSlots = 0;
         this.applicationIDs = new ArrayList<>();
     }
@@ -64,7 +64,7 @@ public class Internship {
     public String getCompanyRepID() { return companyRepresentativeID; }
     public int getNumberOfSlots() { return slots; }
     public int getSlotsFilled() { return filledSlots; }
-    public boolean hidden() { return hidden; }
+    public boolean isVisible() { return visible; }
     public List<String> getApplicationIDs() { return applicationIDs; }
 
     //setters
@@ -76,7 +76,7 @@ public class Internship {
     public void setApplicationCloseDate(LocalDate date) { this.closeDate = date; }
     public void setNumberOfSlots(int numberOfSlots) { this.slots = (numberOfSlots > 10) ? 10 : numberOfSlots; }
     public void setStatus(InternshipStatus status) { this.status = status; }
-    public void setHidden(boolean hide) { this.hidden = hide; }
+    public void setVisibility(boolean hide) { this.visible = hide; }
     public void fillOneSlot() {
         if (this.filledSlots < this.slots) {
             this.filledSlots++;
