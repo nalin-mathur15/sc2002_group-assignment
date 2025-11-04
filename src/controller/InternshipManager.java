@@ -12,8 +12,8 @@ public class InternshipManager {
     private Map<String, Internship> internships;
     private static int InternshipIDGen = 1;
 
-    public InternshipManager() {
-        internships = new HashMap<>();
+    public InternshipManager(Map<String, Internship> internships) {
+        this.internships = internships;
     }
 
     // Add internship (by company rep)

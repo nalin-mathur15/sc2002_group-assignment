@@ -9,8 +9,8 @@ public class AuthManager {
     private Map<String, User> users;
     private Set<String> loggedInUsers;
 
-    public AuthManager() {
-        users = new HashMap<>();
+    public AuthManager(Map<String, User> users) {
+        this.users = users;
         loggedInUsers = new HashSet<>();
     }
 
