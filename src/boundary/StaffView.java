@@ -135,7 +135,7 @@ public class StaffView {
 			} else { System.out.println("Invalid action. Returning to menu..."); }	
 		}		
 	}
-	
+	//
 	public void ApproveIntern(List<Internship> pendingInternships) {
 		System.out.println("Select an Internship to approve or reject (1-" + pendingInternships.size() + ")");
 		System.out.println("Enter '0' to go back to menu.");
