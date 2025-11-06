@@ -32,7 +32,7 @@ public class AuthManager {
             System.out.println("Login successful. Welcome, " + user.getName() + "!");
             return true;
         }
-        System.out.println("Invalid user ID or password.");
+        System.out.println("Invalid user ID or password.\n");
         return false;
     }
 

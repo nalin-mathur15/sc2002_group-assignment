@@ -178,8 +178,6 @@ public class StaffView {
 			// not sure how to compound filters together
 			
 		}
-		
-		Menu();
 	}
 	
 	private void ChangePassword() {
@@ -195,5 +193,9 @@ public class StaffView {
         } else {
             System.out.println("Failed to change password. Old password may be incorrect.");
         }
-    }	
+    }
+
+	public void Logout() {
+		authManager.logout(s);
+	}	
 }

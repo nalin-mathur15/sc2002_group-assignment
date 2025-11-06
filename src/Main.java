@@ -9,14 +9,15 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Main {
-	private static final String STUDENT_FILE = "data/students.csv";
-    private static final String STAFF_FILE = "data/staff.csv";
-    private static final String REP_FILE = "data/companyReps.csv";
-    private static final String INTERNSHIP_FILE = "data/internships.csv";
-    private static final String APPLICATION_FILE = "data/applications.csv";
+	private static final String STUDENT_FILE = "src/data/students.csv";
+    private static final String STAFF_FILE = "src/data/staff.csv";
+    private static final String REP_FILE = "src/data/companyReps.csv";
+    private static final String INTERNSHIP_FILE = "src/data/internships.csv";
+    private static final String APPLICATION_FILE = "src/data/applications.csv";
 
     public static void main(String[] args) {
 		System.out.println("[Main] Loading data from files...");
+		
 		// load data
 		Map<String, Student> allStudents = DataHandler.loadStudents(STUDENT_FILE);
 		Map<String, Staff> allStaff = DataHandler.loadStaff(STAFF_FILE);
@@ -37,7 +38,8 @@ public class Main {
     	
     	System.out.println("---Internship Management System---");
     	// main menu
-    	MainMenu mainMenu = new MainMenu(applicationManager, approvalManager, authManager, internshipManager);
+    	MainMenu mainMenu = new MainMenu(applicationManager, approvalManager, authManager, internshipManager, 
+		allCompanyReps, allStudents, allStaff);
     	mainMenu.Start();
     	
 		// save when closing

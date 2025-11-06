@@ -17,17 +17,20 @@ public class MainMenu {
     private Map<String, Staff> allStaffs;
 	
 	public MainMenu(ApplicationManager applicationManager, ApprovalManager approvalManager, 
-			AuthManager authManager, InternshipManager internshipManager) {
+			AuthManager authManager, InternshipManager internshipManager, Map<String, CompanyRepresentative> allCompanyReps,
+			Map<String, Student> allStudents, Map<String, Staff> allStaffs) {
 		this.applicationManager = applicationManager;
 		this.approvalManager = approvalManager;
 		this.authManager = authManager;
 		this.internshipManager = internshipManager;
+		this.allCompanyReps = allCompanyReps;
+		this.allStudents = allStudents;
+		this.allStaffs = allStaffs;
 	}
 	
 	public void Start() {
 		int choice;
 		do {
-			System.out.println("Perform the following methods:");
 			System.out.println("1: Login");
 			System.out.println("2: Register as Company Representative");
 			choice = InputService.readInt();

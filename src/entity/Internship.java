@@ -64,6 +64,7 @@ public class Internship {
     public String getCompanyRepID() { return companyRepresentativeID; }
     public int getNumberOfSlots() { return slots; }
     public int getSlotsFilled() { return filledSlots; }
+    public int getNumberOfSlotsAvailable() { return slots - filledSlots; }
     public boolean isVisible() { return visible; }
     public List<String> getApplicationIDs() { return applicationIDs; }
 

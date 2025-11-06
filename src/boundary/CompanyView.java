@@ -30,7 +30,8 @@ public class CompanyView {
 	public void Menu() {
 		int choice;
 		do {
-			System.out.println("Perform the following methods:");
+			System.out.println("\n ------ Company Menu ------");
+			System.out.println("Currently logged in as: " + cr.getName());
 			System.out.println("1: Create Internship (max 5)");
 			System.out.println("2: View Internships Created");
 			System.out.println("3: Change Password");
@@ -38,18 +39,13 @@ public class CompanyView {
 			choice = InputService.readInt();
 		
 			switch (choice) {
-				case 1:
-					CreateInternship();
-					break;
-				case 2:
-					ViewInternshipsCreated();
-					break;
-				case 3:
-					ChangePassword();
-				case 4: 
-					System.out.println("Logging out ...");
+				case 1 -> CreateInternship();
+				case 2 -> ViewInternshipsCreated();
+				case 3 -> ChangePassword();
+				case 4 -> System.out.println("Logging out ...");
+				default -> System.out.println("Invalid choice. Please try again. ");
 				}
-		} while (choice < 4 && choice > 0);
+		} while (choice != 4);
 	}
 	
 	public void CreateInternship() {
@@ -198,4 +194,8 @@ public class CompanyView {
 		authManager.changePassword(cr, oldPword, newPword);
 		Menu();
 	}
+
+	public void Logout() {
+		authManager.logout(cr);
+	}	
 }
