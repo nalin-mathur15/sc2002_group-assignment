@@ -34,7 +34,7 @@ public class ApplicationManager {
         }
 
         // Check if student reached max applications
-        if (student.getSubmittedApplicationIDs().size() > 3) {
+        if (student.getSubmittedApplicationIDs().size() > 2) {
             System.out.println("Error: You have reached the maximum number of applications.");
             return false;
         }
@@ -79,6 +79,25 @@ public class ApplicationManager {
         if (app == null) {
             System.out.println("Application not found.");
             return false;
+        }
+
+        Internship internship = allInternships.get(app.getInternshipID());
+
+        // Check on max slots for accepting applications
+        if (newStatus == ApplicationStatus.SUCCESSFUL || newStatus == ApplicationStatus.ACCEPTED) {
+            if (internship.getNumberOfSlotsAvailable() == 0) {
+                System.out.println("Internship Slots are already full.");
+                return false;
+            }
+        }
+        // Handle slot adjustments
+        else if (newStatus == ApplicationStatus.ACCEPTED) {
+            internship.fillOneSlot();
+            if (internship.getNumberOfSlotsAvailable() == 0) { internship.setStatus(InternshipStatus.FULL); }
+        }
+        else if (newStatus == ApplicationStatus.WITHDRAWN) {
+            internship.clearOneSlot();
+            if (internship.getStatus() == InternshipStatus.FULL) { internship.setStatus(InternshipStatus.APPROVED); }
         }
         app.setStatus(newStatus);
         Student student = allStudents.get(app.getStudentID());
@@ -133,5 +152,16 @@ public class ApplicationManager {
             }
         }
         return pending;
+    }
+
+    // Get all pending withdrawal requests
+    public List<InternshipApplication> getPendingWithdrawals() {
+        List<InternshipApplication> pendingWithdrawals = new ArrayList<>();
+        for (InternshipApplication a : applications.values()) {
+            if (a.getStatus() == ApplicationStatus.PENDING_WITHDRAWAL) {
+                pendingWithdrawals.add(a);
+            }
+        }
+        return pendingWithdrawals;
     }
 }
