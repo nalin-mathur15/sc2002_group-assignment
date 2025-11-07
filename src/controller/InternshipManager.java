@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import entity.*;
 import entity.Internship.InternshipLevel;
 import entity.Internship.InternshipStatus;
-
+import java.time.LocalDate;
 public class InternshipManager {
     // Manages listing of internships, creating, approving, and status of internship
 
@@ -76,9 +76,22 @@ public class InternshipManager {
 
     // Get all internships
     public Collection<Internship> getAllInternships() {
+        updateExpiredInternships();
         return internships.values();
     }
     
+    private void updateExpiredInternships() {
+        LocalDate today = LocalDate.now();
+        for(Internship i : internships.values()) {
+            if(i.getStatus() == InternshipStatus.APPROVED) {
+                if(today.isAfter(i.getApplicationCloseDate())) {
+                    i.setStatus(InternshipStatus.REJECTED);
+                    // for debugging
+                    // System.out.println("[InternshipManager] Internship '" + internship.getTitle() + "' has expired and is closed.");
+                }
+            }
+        }
+    }
     public static int UseInternIDGen() {
     	int old = InternshipIDGen;
     	InternshipIDGen += 1;
