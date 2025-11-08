@@ -3,7 +3,7 @@ import utility.DataHandler;
 import utility.InputService;
 import controller.*;
 import entity.*;
-import entity.Internship.InternshipStatus;
+//import entity.Internship.InternshipStatus;
 
 import java.util.Map;
 import java.util.HashMap;

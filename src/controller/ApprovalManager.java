@@ -4,9 +4,7 @@ import entity.CompanyRepresentative;
 import entity.Internship;
 import entity.Internship.InternshipStatus;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 public class ApprovalManager {
     // handle all requests that require staff approval (such as opening a new internship position)
     private final Map<String, CompanyRepresentative> allCompanyReps;
@@ -67,5 +65,8 @@ public class ApprovalManager {
             System.out.println("Internship \"" + internship.getTitle() + "\" (" + internshipID + ") rejected. ");
         }
         return true;
+    }
+    public Collection<CompanyRepresentative> getAllRepresentatives() {
+        return allCompanyReps.values();
     }
 }

@@ -41,6 +41,15 @@ public class InputService {
 		int value = answer.isEmpty() ? 0 : Integer.parseInt(answer);
 		return value;
 	}
+
+	public static int readIntRange(int low, int high) {
+		int val = getScanner().nextInt();
+		while (val < low || val > high) {
+			System.out.println("[Input Service] Invalid choice. Please retry.");
+			val = getScanner().nextInt();
+		}
+		return val;
+	}
 	public static int readInt() {
 		String answer = getScanner().nextLine();
 		while (!InputValidator.isValidInteger(answer)){
