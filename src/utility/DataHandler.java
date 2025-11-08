@@ -75,6 +75,7 @@ public final class DataHandler {
         } catch (IOException e) {
             System.err.println("[DataHandler] Error loading students: " + e.getMessage());
         }
+        System.out.println("[DataHandler] Loaded " + students.size() + " students from " + path);
         return students;
     }
 
@@ -99,6 +100,7 @@ public final class DataHandler {
         } catch (IOException e) {
             System.err.println("[DataHandler] Error saving students: " + e.getMessage());
         }
+        System.out.println("[DataHandler] Saved " + students.size() + " students to " + path);
     }
 
     public static Map<String, Staff> loadStaff(String path) {
@@ -140,6 +142,7 @@ public final class DataHandler {
         } catch (IOException e) {
             System.err.println("[DataHandler] Error loading staff: " + e.getMessage());
         }
+        System.out.println("[DataHandler] Loaded " + staff.size() + " staff from " + path);
         return staff;
     }
 
@@ -163,6 +166,7 @@ public final class DataHandler {
         } catch (IOException e) {
             System.err.println("[DataHandler] Error saving staff: " + e.getMessage());
         }
+        System.out.println("[DataHandler] Saved " + staff.size() + " staff to " + path);
     }
 
     public static Map<String, CompanyRepresentative> loadCompanyReps(String path) {
@@ -215,6 +219,7 @@ public final class DataHandler {
         } catch (IOException e) {
             System.err.println("[DataHandler] Error loading company reps: " + e.getMessage());
         }
+        System.out.println("[DataHandler] Loaded " + reps.size() + " company reps from " + path);
         return reps;
     }
 
@@ -242,6 +247,7 @@ public final class DataHandler {
         } catch (IOException e) {
             System.err.println("[DataHandler] Error saving company reps: " + e.getMessage());
         }
+        System.out.println("[DataHandler] Saved " + reps.size() + " company reps to " + path);
     }
 
     public static Map<String, Internship> loadInternships(String path) {
@@ -287,6 +293,7 @@ public final class DataHandler {
         } catch (IOException e) {
             System.err.println("[DataHandler] Error loading internships: " + e.getMessage());
         }
+        System.out.println("[DataHandler] Loaded " + internships.size() + " internships from " + path);
         return internships;
     }
 
@@ -324,6 +331,7 @@ public final class DataHandler {
         } catch (IOException e) {
             System.err.println("[DataHandler] Error saving internships: " + e.getMessage());
         }
+        System.out.println("[DataHandler] Saved " + internships.size() + " internships to " + path);
     }
 
     // --- Internship Application Data ---
@@ -364,6 +372,7 @@ public final class DataHandler {
         } catch (IOException e) {
             System.err.println("[DataHandler] Error loading applications: " + e.getMessage());
         }
+        System.out.println("[DataHandler] Loaded " + applications.size() + " applications from " + path);
         return applications;
     }
 
@@ -392,6 +401,7 @@ public final class DataHandler {
         } catch (IOException e) {
             System.err.println("[DataHandler] Error saving applications: " + e.getMessage());
         }
+        System.out.println("[DataHandler] Saved " + applications.size() + " applications to " + path);
     }
 }
 

@@ -5,14 +5,15 @@ import java.util.stream.Collectors;
 import entity.*;
 import entity.Internship.InternshipLevel;
 import entity.Internship.InternshipStatus;
-
+import java.time.LocalDate;
 public class InternshipManager {
     // Manages listing of internships, creating, approving, and status of internship
 
     private Map<String, Internship> internships;
+    private static int InternshipIDGen = 1;
 
-    public InternshipManager() {
-        internships = new HashMap<>();
+    public InternshipManager(Map<String, Internship> internships) {
+        this.internships = internships;
     }
 
     // Add internship (by company rep)
@@ -66,9 +67,34 @@ public class InternshipManager {
     public Internship getInternshipById(String internshipId) {
         return internships.get(internshipId);
     }
+    
+    public List<Internship> getInternshipsByCompany(String compName){
+    	return internships.values().stream()
+                .filter(i -> i.getCompanyName().equalsIgnoreCase(compName))
+                .collect(Collectors.toList());
+    }
 
     // Get all internships
     public Collection<Internship> getAllInternships() {
+        updateExpiredInternships();
         return internships.values();
+    }
+    
+    private void updateExpiredInternships() {
+        LocalDate today = LocalDate.now();
+        for(Internship i : internships.values()) {
+            if(i.getStatus() == InternshipStatus.APPROVED) {
+                if(today.isAfter(i.getApplicationCloseDate())) {
+                    i.setStatus(InternshipStatus.REJECTED);
+                    // for debugging
+                    // System.out.println("[InternshipManager] Internship '" + internship.getTitle() + "' has expired and is closed.");
+                }
+            }
+        }
+    }
+    public static int UseInternIDGen() {
+    	int old = InternshipIDGen;
+    	InternshipIDGen += 1;
+    	return old;
     }
 }

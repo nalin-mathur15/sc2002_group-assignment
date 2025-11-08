@@ -1,14 +1,27 @@
 package boundary;
 import utility.InputService;
 import controller.AuthManager;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Login {
     // login sequence for a user
-	public void loginInput() {
-		System.out.println("Please enter userID: ");
+	private AuthManager authManager;
+	public Login(AuthManager authManager) {
+		this.authManager = authManager;
+	}
+	
+	public List<String> Start() {
+		System.out.println("Enter UserID: ");
 		String userID = InputService.readString();
-		System.out.println("Please enter userID: ");
+		System.out.println("Enter Password: ");
 		String pword = InputService.readString();
-		// AuthManager.login(userID, pword);
+		if (authManager.login(userID, pword)) {
+			List<String> loginDetails = new ArrayList<>();
+			loginDetails.add(authManager.getUser(userID).getRole());
+			loginDetails.add(authManager.getUser(userID).getUserID());
+			return loginDetails;
+		}
+		return null;
 	}
 }

@@ -22,9 +22,8 @@ public class ApplicationManager {
         this.allStudents = allStudents;
     }
 
-    // Student submits an application for an internship
+    // student submits an application for an internship
     public boolean submitApplication(Student student, Internship internship) {
-        // Check if student already applied
         for (String appID : student.getSubmittedApplicationIDs()) {
             InternshipApplication app = applications.get(appID);
             if(app != null && app.getInternshipID().equals(internship.getInternshipID())) {
@@ -33,22 +32,19 @@ public class ApplicationManager {
             }
         }
 
-        // Check if student reached max applications
         if (student.getSubmittedApplicationIDs().size() > 3) {
             System.out.println("Error: You have reached the maximum number of applications.");
             return false;
         }
 
-        // Check that internship is valid
         if (internship.getStatus() != InternshipStatus.APPROVED) { System.out.println("Error: This internship is not approved for applications."); return false; }
         if (!internship.isVisible()) { System.out.println("Error: This internship is not currently visible.");return false; }
         if (internship.getStatus() == InternshipStatus.FULL) { System.out.println("Error: This internship is already filled.");return false; }
 
-        // Check if the deadline has passed.
         LocalDate today = LocalDate.now();
         if (today.isAfter(internship.getApplicationCloseDate())) { System.out.println("Error: The application deadline for this internship has passed.");return false; }
 
-        // Check eligibility.
+        // eligibility.
         int year = student.getYear();
         InternshipLevel level = internship.getLevel();
 
@@ -58,7 +54,7 @@ public class ApplicationManager {
             return false;
         }
 
-        // Create new application
+        // create application
         String applicationID = "APP_" + UUID.randomUUID().toString().substring(0, 8);
         InternshipApplication app = new InternshipApplication(
             applicationID,
@@ -73,7 +69,6 @@ public class ApplicationManager {
         return true;
     }
 
-    // Company rep reviews and updates application status
     public boolean updateApplicationStatus(String applicationId, ApplicationStatus newStatus) {
         InternshipApplication app = applications.get(applicationId);
         if (app == null) {
@@ -87,7 +82,7 @@ public class ApplicationManager {
         return true;
     }
 
-    // List all applications for a specific internship
+    // all applications for a specific internship
     public List<InternshipApplication> getApplicationsForInternship(String internshipId) {
         List<InternshipApplication> result = new ArrayList<>();
         Internship internship = allInternships.get(internshipId);
@@ -100,7 +95,7 @@ public class ApplicationManager {
         return result;
     }
 
-    // List all applications by a student
+    // all applications by a student
     public List<InternshipApplication> getApplicationsByStudent(String studentId) {
         List<InternshipApplication> result = new ArrayList<>();
         Student student = allStudents.get(studentId);
@@ -113,7 +108,7 @@ public class ApplicationManager {
         return result;
     }
 
-    // Check placement outcome for a student
+    // placement outcome for a student
     public Internship getConfirmedPlacement(Student student) {
         for (String appID : student.getSubmittedApplicationIDs()) {
             InternshipApplication app = applications.get(appID);
@@ -133,5 +128,15 @@ public class ApplicationManager {
             }
         }
         return pending;
+    }
+
+    public Collection<Student> getAllStudents() {
+        return allStudents.values();
+    }
+    public Collection<InternshipApplication> getAllApplications() {
+        return applications.values();
+    }
+    public Collection<Internship> getAllInternships() {
+        return allInternships.values();
     }
 }
