@@ -12,6 +12,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StaffView {
+    // managers
+    private final ApplicationManager applicationManager;
+	private final ApprovalManager approvalManager;
+	private final InternshipManager internshipManager;
+	private final AuthManager authManager;
+	
+    // filter fields
     private InternshipStatus internshipFilterStatus = null;
     private String internshipFilterMajor = null;
     private String internshipFilterCompany = null;
@@ -21,11 +28,8 @@ public class StaffView {
     private Boolean repFilterApproved = null;
     private String repFilterCompany = null;
     private ApplicationStatus appFilterStatus = null;
-	private final ApplicationManager applicationManager;
-	private final ApprovalManager approvalManager;
-	private final InternshipManager internshipManager;
-	private final AuthManager authManager;
-	private Staff s;
+
+    private Staff s;
 	
 	public StaffView(ApplicationManager applicationManager, ApprovalManager approvalManager,
 			AuthManager authManager, InternshipManager internshipManager, Staff st) {
@@ -42,23 +46,29 @@ public class StaffView {
 			System.out.println("\n ------ Staff Menu ------");
 			System.out.println("Currently logged in as: " + s.getName());
 			System.out.println("1: View Company Representative Account Requests");
-			System.out.println("2: View Company Representative Internship Requests");
+			System.out.println("2: View Internship Posting Requests");
 			System.out.println("3: View Student Withdrawal Requests");
-			System.out.println("4: View Existing Internships");
-			System.out.println("5: Change Password");
-			System.out.println("6: Logout");
+			System.out.println("4: View and Filter Internships");
+            System.out.println("5: View and Filter Students");
+            System.out.println("6: View and Filter Company Representatives");
+            System.out.println("7: View and Filter Internship Applications");
+            System.out.println("8: Change Password");
+			System.out.println("9: Logout");
 			System.out.println("Enter choice: ");
 			choice = InputService.readInt();
 			switch (choice) {
 			case 1 -> ViewAccountReqs();
 			case 2 -> ViewInternshipRequests();
 			case 3 -> ViewWithdrawalReqs();
-			case 4 -> ViewExistingInternships();
-			case 5 -> ChangePassword();
-			case 6 -> System.out.println("Logging out ...");
+			case 4 -> viewAndFilterInternships();
+			case 5 -> viewAndFilterStudents();
+            case 6 -> viewAndFilterCompanyReps();
+            case 7 -> viewAndFilterApplications();
+            case 8 -> ChangePassword();
+			case 9 -> Logout();
 			default -> System.out.println("Invalid choice. Please try again. ");
 			}
-		} while (choice != 6);
+		} while (choice != 9);
 	}
 	
 	public void ViewAccountReqs() {
@@ -75,7 +85,7 @@ public class StaffView {
                     (i + 1), rep.getName(), rep.getCompanyName(), rep.getEmail());
         	}
         	System.out.println("-------------------------------------------------");
-			ApproveCompany(pendingReps);
+			ApproveRepresentative(pendingReps);
 		}
 	}
 	
@@ -103,24 +113,8 @@ public class StaffView {
 		// call back to ViewWithdrawal for updated list
 	}
 	
-	public void ViewExistingInternships() {
-		Collection<Internship> allInternships = internshipManager.getAllInternships();
-		if (allInternships.isEmpty()) {
-			System.out.println("No Internships To View.");
-			return;
-		} else {
-			System.out.println("\n--- All Internships ---");
-			for (Internship intern : allInternships) {
-				System.out.printf("%-25s | %-15s | Status: %s | Visible: %s\n",
-					intern.getTitle(), intern.getCompanyName(), intern.getStatus(), intern.isVisible());
-				// ChangeFilter();
-			}
-		}
-		// display according to filterSetting
-		// ask to apply different filter settings or back to staff view
-	}
 	
-	public void ApproveCompany(List<CompanyRepresentative> pendingReps) {
+	public void ApproveRepresentative(List<CompanyRepresentative> pendingReps) {
 		System.out.println("Select a Company Representative to approve or reject. (1-" + pendingReps.size() + ")");
 		System.out.println("Enter '0' to go back to menu.");
 		int choice = InputService.readInt();
@@ -146,7 +140,7 @@ public class StaffView {
 			} else { System.out.println("Invalid action. Returning to menu..."); }	
 		}		
 	}
-	//
+	
 	public void ApproveInternship(List<Internship> pendingInternships) {
 		System.out.println("Select an Internship to approve or reject (1-" + pendingInternships.size() + ")");
 		System.out.println("Enter '0' to go back to menu.");
@@ -470,6 +464,7 @@ public class StaffView {
     }
 
 	public void Logout() {
+        System.out.println("Logging out ...");
 		authManager.logout(s);
 	}	
 }
