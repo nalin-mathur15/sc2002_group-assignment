@@ -1,0 +1,65 @@
++---------------------------------------------------------------------------------------+
+|                                       StaffView                                       |
++---------------------------------------------------------------------------------------+
+| - applicationManager : ApplicationManager                                             |
+| - approvalManager    : ApprovalManager                                                |
+| - internshipManager  : InternshipManager                                              |
+| - authManager        : AuthManager                                                    |
+| - internshipFilterStatus : InternshipStatus                                           |
+| - internshipFilterMajor  : String                                                     |
+| - internshipFilterCompany: String                                                     |
+| - internshipFilterLevel  : InternshipLevel                                            |
+| - studentFilterYear  : Integer                                                        |
+| - studentFilterMajor : String                                                         |
+| - repFilterApproved  : Boolean                                                        |
+| - repFilterCompany   : String                                                         |
+| - appFilterStatus    : ApplicationStatus                                              |
+| - s : Staff                                                                            |
++---------------------------------------------------------------------------------------+
+| + StaffView(applicationManager: ApplicationManager,                                   |
+|             approvalManager: ApprovalManager,                                         |
+|             authManager: AuthManager,                                                 |
+|             internshipManager: InternshipManager,                                     |
+|             st: Staff)                                                                |
+|                                                                                       |
+| + Menu() : void                                                                       |
+|                                                                                       |
+| + ViewAccountReqs() : void                                                            |
+| + ViewInternshipRequests() : void                                                     |
+| + ViewWithdrawalReqs() : void                                                         |
+|                                                                                       |
+| + ApproveRepresentative(pendingReps: List<CompanyRepresentative>) : void              |
+| + ApproveInternship(pendingInternships: List<Internship>) : void                      |
+|                                                                                       |
+| - displayApplications(applications: Collection<InternshipApplication>) : void         |
+| - displayCompanyReps(reps: Collection<CompanyRepresentative>) : void                  |
+| - displayStudents(students: Collection<Student>) : void                               |
+| - displayInternships(internships: Collection<Internship>) : void                      |
+|                                                                                       |
+| - viewAndFilterInternships() : void                                                   |
+| - viewAndFilterStudents() : void                                                      |
+| - viewAndFilterCompanyReps() : void                                                   |
+| - viewAndFilterApplications() : void                                                  |
+|                                                                                       |
+| - ChangePassword() : void                                                             |
+| + Logout() : void                                                                      |
++---------------------------------------------------------------------------------------+
+
+<<uses>>
+- ApplicationManager
+- ApprovalManager
+- InternshipManager
+- AuthManager
+- CompanyRepresentative
+- Internship
+- Internship.InternshipLevel
+- Internship.InternshipStatus
+- InternshipApplication
+- InternshipApplication.ApplicationStatus
+- Student
+- Staff
+- Collection
+- List
+- Stream
+- Collectors
+- InputService
