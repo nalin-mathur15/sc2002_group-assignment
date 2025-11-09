@@ -31,6 +31,9 @@
 +-----------------------------------------------------------------------+
 
 <<uses>>
+- Map
+- List
+- Collection
 - Internship
 - Internship.InternshipLevel
 - Internship.InternshipStatus
