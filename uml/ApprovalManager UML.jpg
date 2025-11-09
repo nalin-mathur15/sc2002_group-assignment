@@ -1,0 +1,29 @@
++---------------------------------------------------------------+
+|                        ApprovalManager                        |
++---------------------------------------------------------------+
+| - allCompanyReps : Map<String, CompanyRepresentative>          |
+| - allInternships : Map<String, Internship>                     |
++---------------------------------------------------------------+
+| + ApprovalManager(                                            |
+|       allCompanyReps: Map<String, CompanyRepresentative>,      |
+|       allInternships: Map<String, Internship>                 |
+|   )                                                           |
+|                                                               |
+| + getPendingRepresentativeApprovals() :                       |
+|       List<CompanyRepresentative>                              |
+|                                                               |
+| + getPendingInternshipApprovals() :                           |
+|       List<Internship>                                        |
+|                                                               |
+| + approveRepresentative(                                      |
+|       repID: String,                                          |
+|       approve: boolean                                        |
+|   ) : boolean                                                 |
+|                                                               |
+| + approveInternship(                                          |
+|       internshipID: String,                                   |
+|       approve: boolean                                        |
+|   ) : boolean                                                 |
+|                                                               |
+| + getAllRepresentatives() : Collection<CompanyRepresentative>  |
++---------------------------------------------------------------+
