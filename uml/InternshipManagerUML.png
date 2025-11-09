@@ -29,3 +29,10 @@
 |                                                                       |
 | + UseInternIDGen() : int                                              |
 +-----------------------------------------------------------------------+
+
+<<uses>>
+Internship
+Internship.InternshipLevel
+Internship.InternshipStatus
+Student
+LocalDate
