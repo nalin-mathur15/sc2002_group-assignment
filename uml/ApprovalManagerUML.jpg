@@ -27,3 +27,11 @@
 |                                                               |
 | + getAllRepresentatives() : Collection<CompanyRepresentative>  |
 +---------------------------------------------------------------+
+
+<<uses>>
+- CompanyRepresentative
+- Internship
+- Internship.InternshipStatus
+- Map 
+- List 
+- Collection
