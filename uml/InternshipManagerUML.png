@@ -31,8 +31,8 @@
 +-----------------------------------------------------------------------+
 
 <<uses>>
-Internship
-Internship.InternshipLevel
-Internship.InternshipStatus
-Student
-LocalDate
+- Internship
+- Internship.InternshipLevel
+- Internship.InternshipStatus
+- Student
+- LocalDate
