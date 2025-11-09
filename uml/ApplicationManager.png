@@ -38,3 +38,15 @@
 | + getAllInternships()   : Collection<Internship>              |
 +---------------------------------------------------------------+
 
+<<uses>>
+- Student
+- Internship
+- InternshipApplication
+- Internship.InternshipLevel
+- Internship.InternshipStatus
+- InternshipApplication.ApplicationStatus
+- LocalDate
+- Map
+- List
+- Collection
+
