@@ -97,4 +97,9 @@ public class Internship {
     public void removeApplication(String applicationID) {
         this.applicationIDs.remove(applicationID);
     }
+
+    public void toStringDetailed() {
+        System.out.printf("Internship ID: %s | Title: %s | Description: %s | Level: %s | Preferred Major: %s\nOpen Date: %s | Close Date: %s | Company: %s | Status: %s | Slots Filled: %d/%d | Visible: %b\n",
+                internshipID, title, description, level, preferredMajor, openDate, closeDate, employer, status, filledSlots, slots, visible);
+    }
 }

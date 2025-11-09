@@ -1,5 +1,6 @@
 package utility;
 import java.util.Scanner;
+import utility.InputValidator;
 
 public class InputService {
 	private static final Scanner scanner = new Scanner(System.in);;
@@ -14,16 +15,30 @@ public class InputService {
 	// Convenience methods
 	public static String readString(String prompt) {
 		System.out.print(prompt);
-		return getScanner().nextLine();
+		String answer = getScanner().nextLine();
+		while (!InputValidator.isNonEmptyString(answer)){
+			System.out.print("Input cannot be empty. Please retry: ");
+			answer = getScanner().nextLine();
+		}
+		return answer;
 	}
 	public static String readString() {
-		return getScanner().nextLine();
+		String answer = getScanner().nextLine();
+		while (!InputValidator.isNonEmptyString(answer)){
+			System.out.print("Input cannot be empty. Please retry: ");
+			answer = getScanner().nextLine();
+		}
+		return answer;
 	}
 	
 	public static int readInt(String prompt) {
 		System.out.print(prompt);
-		int value = getScanner().nextInt();
-		getScanner().nextLine(); 
+		String answer = getScanner().nextLine();
+		while (!InputValidator.isValidInteger(answer)){
+			System.out.print("Invalid integer. Please retry: ");
+			answer = getScanner().nextLine();
+		}
+		int value = answer.isEmpty() ? 0 : Integer.parseInt(answer);
 		return value;
 	}
 
@@ -36,8 +51,12 @@ public class InputService {
 		return val;
 	}
 	public static int readInt() {
-		int value = getScanner().nextInt();
-		getScanner().nextLine(); 
+		String answer = getScanner().nextLine();
+		while (!InputValidator.isValidInteger(answer)){
+			System.out.print("Invalid integer. Please retry: ");
+			answer = getScanner().nextLine();
+		}
+		int value = answer.isEmpty() ? 0 : Integer.parseInt(answer);
 		return value;
 	}
 	

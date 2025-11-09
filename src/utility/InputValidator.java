@@ -37,4 +37,26 @@ public final class InputValidator {
     public static boolean atMost(int value, int max) {
         return value <= max;
     }
+
+    public static boolean isValidInteger(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean isValidDouble(String input) {
+        try {
+            Double.parseDouble(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean isNonEmptyString(String input) {
+        return input != null && !input.trim().isEmpty();
+    }
 }

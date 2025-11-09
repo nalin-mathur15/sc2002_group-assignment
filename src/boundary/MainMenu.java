@@ -33,11 +33,12 @@ public class MainMenu {
 		do {
 			System.out.println("1: Login");
 			System.out.println("2: Register as Company Representative");
+			System.out.println("3: Terminate Program");
 			choice = InputService.readInt();
 		
 			switch (choice) {
 				case 1:
-					// call login, which returns student
+					// call login, returns loginDetails(role, userID)
 					Login login = new Login(authManager);
 					List<String> loginDetails = login.Start();
 					if (loginDetails != null) {
@@ -54,18 +55,28 @@ public class MainMenu {
 								break;
 							case "CompanyRepresentative":
 								CompanyRepresentative compRep = allCompanyReps.get(loginDetails.get(1));
-								CompanyView companyView = new CompanyView(applicationManager, authManager, internshipManager, compRep);
-								companyView.Menu();
+								if (compRep.approvedRepresentative()) {
+									CompanyView companyView = new CompanyView(applicationManager, authManager, internshipManager, compRep);
+									companyView.Menu();
+								}
+								else {
+									System.out.println("Your Company Representative account is still pending approval by Staff. Please wait for approval before logging in.");
+								}
 								break;
 						}
 					}
 					break;
 				case 2:
-					// call register
+					Register register = new Register(allCompanyReps);
+					register.Start();
 					break;
 				case 3: 
-					System.out.println("Program terminating ….");
-				}
-		} while (choice < 3 && choice > 0);
+					System.out.println("Program terminating ...");
+					break;
+				default:
+					System.out.println("Invalid choice. Please try again. ");
+					break;
+			}
+		} while (choice != 3);
 	}
 }

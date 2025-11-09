@@ -3,7 +3,7 @@ package entity;
 public class InternshipApplication {
     // class for a student's application to a specific internship
     public enum ApplicationStatus {
-        PENDING, UNSUCCESSFUL, SUCCESSFUL, PENDING_WITHDRAWAL, WITHDRAWN
+        PENDING, UNSUCCESSFUL, SUCCESSFUL, ACCEPTED, PENDING_WITHDRAWAL, WITHDRAWN
     }
     private final String applicationID;
     private final String internshipID;

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class CompanyView {
+public class CompanyView implements ChangePasswordInt, LogoutInt {
     // menu and options for company rep after logging in
 	private ApplicationManager applicationManager;
 	private AuthManager authManager;
@@ -62,7 +62,7 @@ public class CompanyView {
 			int choice;
 			do {
 				choice = InputService.readInt();
-			} while (choice < 1 && choice > 3);
+			} while (choice < 1 || choice > 3);
 			InternshipLevel internLevel = switch (choice) {
 			case 1 -> InternshipLevel.BASIC;
 			case 2 -> InternshipLevel.INTERMEDIATE;
@@ -117,11 +117,14 @@ public class CompanyView {
 	}
 	
 	public void ViewInternshipsCreated() {
-		List<Internship> listIntern = internshipManager.getInternshipsByCompany(cr.getCompanyName());
-		for (Internship intern : listIntern) {
-			System.out.println(intern.getTitle());
+		System.out.println("\n ------ Internships Created ------");
+		List<Internship> listInternship = internshipManager.getInternshipsByCompany(cr.getCompanyName());
+		for (int i = 0; i < listInternship.size(); i++) {
+			System.out.printf("%d. \n", (i + 1));
+			listInternship.get(i).toStringDetailed();
+			System.out.println();
 		}
-		PerformAction(listIntern);
+		PerformAction(listInternship);
 	}
 	
 	public void PerformAction(List<Internship> listIntern) {
@@ -150,6 +153,7 @@ public class CompanyView {
 			System.out.println("Going back to view Internships created.");
 		}
 		else {
+			System.out.println("\n ------ Student Applications For Internships ------");
 			for (int i=0; i<listApp.size(); i++) {
 				InternshipApplication intApp = listApp.get(i);
 				Student s = allStudents.get(intApp.getStudentID());
