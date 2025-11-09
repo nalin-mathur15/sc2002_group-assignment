@@ -1,0 +1,19 @@
++-----------------------------------------------------------------------+
+|                             InputService                              |
++-----------------------------------------------------------------------+
+| - scanner : Scanner                                                   |
++-----------------------------------------------------------------------+
+| + InputService()                                                      |
+|                                                                       |
+| + getInt(prompt: String) : int                                        |
+| + getIntInRange(prompt: String, min: int, max: int) : int             |
+| + getString(prompt: String) : String                                  |
+| + getNonEmptyString(prompt: String) : String                          |
+| + getYesNo(prompt: String) : boolean                                  |
+| + getLocalDate(prompt: String) : LocalDate                            |
++-----------------------------------------------------------------------+
+
+<<uses>>
+- Scanner
+- LocalDate
+- DateTimeParseException
