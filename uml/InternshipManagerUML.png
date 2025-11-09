@@ -1,20 +1,31 @@
-+----------------------------------------------------+
-|                  InternshipManager                 |
-+----------------------------------------------------+
-| - internships : Map<String, Internship>            |
-+----------------------------------------------------+
-| + InternshipManager()                              |
-| + addInternship(internship : Internship) : void    |
-| + approveInternship(internshipId : String) : boolean |
-| + toggleVisibility(internshipId : String, visible : boolean) : boolean |
-| + getInternshipsForStudent(s : Student) : List<Internship> |
-| + filterInternships(major : String, level : InternshipLevel, status : InternshipStatus) : List<Internship> |
-| + getInternshipById(internshipId : String) : Internship |
-| + getAllInternships() : Collection<Internship>     |
-+----------------------------------------------------+
-
-<<uses>>
-- Internship
-- Student
-- InternshipLevel
-- InternshipStatus
++-----------------------------------------------------------------------+
+|                           InternshipManager                           |
++-----------------------------------------------------------------------+
+| - internships     : Map<String, Internship>                           |
+| - InternshipIDGen : static int                                        |
++-----------------------------------------------------------------------+
+| + InternshipManager(internships: Map<String, Internship>)             |
+|                                                                       |
+| + addInternship(internship: Internship) : void                        |
+|                                                                       |
+| + approveInternship(internshipId: String) : boolean                   |
+|                                                                       |
+| + toggleVisibility(internshipId: String, visible: boolean) : boolean  |
+|                                                                       |
+| + getInternshipsForStudent(s: Student) : List<Internship>             |
+|                                                                       |
+| + filterInternships(major: String,                                     |
+|                     level: InternshipLevel,                            |
+|                     status: InternshipStatus)                          |
+|       : List<Internship>                                               |
+|                                                                       |
+| + getInternshipById(internshipId: String) : Internship                |
+|                                                                       |
+| + getInternshipsByCompany(compName: String) : List<Internship>        |
+|                                                                       |
+| + getAllInternships() : Collection<Internship>                        |
+|                                                                       |
+| - updateExpiredInternships() : void                                   |
+|                                                                       |
+| + UseInternIDGen() : int                                              |
++-----------------------------------------------------------------------+
