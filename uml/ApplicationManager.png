@@ -1,12 +1,40 @@
-+------------------------------------+
-|          ApplicationManager         |
-+------------------------------------+
-| - applications : Map<String, InternshipApplication> |
-+------------------------------------+
-| + submitApplication(Student, Internship) : boolean  |
-| + updateApplicationStatus(String, ApplicationStatus) : boolean |
-| + getApplicationsForInternship(String) : List<InternshipApplication> |
-| + getApplicationsByStudent(String) : List<InternshipApplication> |
-| + checkPlacementStatus(Student) : void              |
-| + getPendingApplications() : List<InternshipApplication> |
-+------------------------------------+
++---------------------------------------------------------------+
+|                      ApplicationManager                      |
++---------------------------------------------------------------+
+| - applications   : Map<String, InternshipApplication>         |
+| - allInternships : Map<String, Internship>                    |
+| - allStudents    : Map<String, Student>                       |
++---------------------------------------------------------------+
+| + ApplicationManager(                                        |
+|     allApplications: Map<String, InternshipApplication>,      |
+|     allInternships: Map<String, Internship>,                  |
+|     allStudents: Map<String, Student>                         |
+|   )                                                           |
+|                                                               |
+| + submitApplication(student: Student,                         |
+|                     internship: Internship) : boolean         |
+|                                                               |
+| + updateApplicationStatus(                                    |
+|       applicationId: String,                                 |
+|       newStatus: ApplicationStatus                            |
+|   ) : boolean                                                 |
+|                                                               |
+| + getApplicationsForInternship(                               |
+|       internshipId: String                                    |
+|   ) : List<InternshipApplication>                             |
+|                                                               |
+| + getApplicationsByStudent(                                   |
+|       studentId: String                                       |
+|   ) : List<InternshipApplication>                             |
+|                                                               |
+| + getConfirmedPlacement(                                      |
+|       student: Student                                        |
+|   ) : Internship                                              |
+|                                                               |
+| + getPendingApplications() : List<InternshipApplication>      |
+|                                                               |
+| + getAllStudents()      : Collection<Student>                 |
+| + getAllApplications()  : Collection<InternshipApplication>   |
+| + getAllInternships()   : Collection<Internship>              |
++---------------------------------------------------------------+
+
