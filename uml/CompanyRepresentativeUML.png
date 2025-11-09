@@ -1,0 +1,38 @@
++-----------------------------------------------------------------------+
+|                      CompanyRepresentative                            |
+|                          extends User                                 |
++-----------------------------------------------------------------------+
+| - company : String                                                    |
+| - department : String                                                 |
+| - position : String                                                   |
+| - staffApproved : boolean                                             |
+| - postedInternshipIDs : List<String>                                  |
++-----------------------------------------------------------------------+
+| + CompanyRepresentative(userID: String,                               |
+|                         name: String,                                 |
+|                         email: String,                                |
+|                         pwd: String,                                  |
+|                         companyname: String,                          |
+|                         dep: String,                                  |
+|                         position: String)                             |
+|                                                                       |
+| + getCompanyName() : String                                           |
+| + getDepartment() : String                                            |
+| + getPosition() : String                                              |
+| + getPostedInternshipIDs() : List<String>                             |
+| + approvedRepresentative() : boolean                                  |
+|                                                                       |
+| + setCompanyName(company: String) : void                              |
+| + setDepartment(dep: String) : void                                   |
+| + setPosition(pos: String) : void                                     |
+| + approveRepresentative(approve: boolean) : void                      |
+|                                                                       |
+| + addInternship(internshipID: String) : boolean                       |
+| + removeInternship(internshipID: String) : boolean                    |
++-----------------------------------------------------------------------+
+
+<<uses>>
+- User (superclass)
+- List
+- ArrayList
+- String
