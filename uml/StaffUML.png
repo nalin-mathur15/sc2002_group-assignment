@@ -1,0 +1,26 @@
++--------------------------------------------------+
+|                     Staff                        |
++--------------------------------------------------+
+| - department : String                            |
+| - role       : String                            |
++--------------------------------------------------+
+| + Staff(staffID: String,                         |
+|         name: String,                            |
+|         email: String,                           |
+|         pwd: String,                             |
+|         dep: String,                             |
+|         role: String)                            |
+|                                                  |
+| + getDepartment() : String                       |
+| + getRole() : String                              |
+|                                                  |
+| + setDepartment(dep: String) : void              |
+| + setRole(role: String) : void                   |
++--------------------------------------------------+
+
+<<extends>>
+- User
+
+<<uses>>
+- User
+- String

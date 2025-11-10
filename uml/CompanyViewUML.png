@@ -1,0 +1,45 @@
++-----------------------------------------------------------------------+
+|                               CompanyView                             |
++-----------------------------------------------------------------------+
+| - applicationManager : ApplicationManager                             |
+| - authManager        : AuthManager                                    |
+| - internshipManager  : InternshipManager                              |
+| - cr                 : CompanyRepresentative                          |
+| - allStudents        : Map<String, Student>                           |
++-----------------------------------------------------------------------+
+| + CompanyView(applicationManager: ApplicationManager,                 |
+|                authManager: AuthManager,                              |
+|                internshipManager: InternshipManager,                  |
+|                cr: CompanyRepresentative)                             |
+|                                                                       |
+| + Menu() : void                                                       |
+|                                                                       |
+| + CreateInternship() : void                                           |
+|                                                                       |
+| + ViewInternshipsCreated() : void                                     |
+|                                                                       |
+| + PerformAction(listIntern: List<Internship>) : void                  |
+|                                                                       |
+| + ViewApplicationsForInternship(intern: Internship) : void            |
+|                                                                       |
+| + ChangePassword() : void                                             |
+|                                                                       |
+| + Logout() : void                                                     |
++-----------------------------------------------------------------------+
+
+<<uses>>
+- ApplicationManager
+- AuthManager
+- InternshipManager
+- CompanyRepresentative
+- Internship
+- Internship.InternshipLevel
+- InternshipApplication
+- InternshipApplication.ApplicationStatus
+- Student
+- InputService
+- Map
+- List
+- LocalDate
+- DateTimeFormatter
+- DateTimeParseException

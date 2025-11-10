@@ -1,0 +1,28 @@
++-----------------------------------------------------------------------+
+|                           InputValidator                              |
++-----------------------------------------------------------------------+
+| <<static>> STUDENT_ID : Pattern                                       |
+| <<static>> EMAIL      : Pattern                                       |
++-----------------------------------------------------------------------+
+| - InputValidator()                                                    |
+|                                                                       |
+| <<static>> nonEmpty(s: String) : boolean                              |
+|                                                                       |
+| <<static>> isPositiveInt(x: int) : boolean                            |
+|                                                                       |
+| <<static>> inRange(x: int, minInclusive: int,                        |
+|                    maxInclusive: int) : boolean                       |
+|                                                                       |
+| <<static>> isValidStudentId(id: String) : boolean                     |
+|                                                                       |
+| <<static>> isValidEmail(email: String) : boolean                      |
+|                                                                       |
+| <<static>> validDateRange(open: LocalDate, close: LocalDate) : bool   |
+|                                                                       |
+| <<static>> atMost(value: int, max: int) : boolean                     |
++-----------------------------------------------------------------------+
+
+<<uses>>
+- LocalDate
+- Pattern
+- String
