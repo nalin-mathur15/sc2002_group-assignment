@@ -46,7 +46,7 @@ public class StudentView extends AbstractView {
 		} while (choice != 4);
 	}
 	
-	public void ViewInternship() {
+	private void ViewInternship() {
 		List<Internship> listInternship = internshipManager.getInternshipsForStudent(s);
 		if (listInternship.isEmpty()) {
 			System.out.println("No internships available to view.");
@@ -64,7 +64,7 @@ public class StudentView extends AbstractView {
 		}
 	}
 	
-	public void ApplyInternship(List<Internship> listInternship) {
+	private void ApplyInternship(List<Internship> listInternship) {
 		System.out.println("Select an Internship to apply for.");
 		System.out.println("Otherwise, enter '0' to go back to menu.");
 		System.out.printf("** Reminder that you can only apply for a maximum of 3 Internships. Current: %d **\n", s.getSubmittedApplicationIDs().size());
@@ -92,7 +92,7 @@ public class StudentView extends AbstractView {
 		}
 	}
 
-	public void ViewApplications() {
+	private void ViewApplications() {
 		List<InternshipApplication> listApplications = applicationManager.getApplicationsByStudent(s.getUserID());
 		if (listApplications.isEmpty()) {
 			System.out.println("No applications to view.");
@@ -110,7 +110,7 @@ public class StudentView extends AbstractView {
 		}
 	}
 
-	public void ApplicationActions(List<InternshipApplication> listApplications) {
+	private void ApplicationActions(List<InternshipApplication> listApplications) {
 		System.out.println("Select an Application to accept or withdraw.");
 		System.out.println("Otherwise, enter '0' to go back to menu.");
 		int choice = InputService.readInt();
