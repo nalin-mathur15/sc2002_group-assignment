@@ -1,12 +1,15 @@
 package utility;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Pattern;
 
 public final class InputValidator {
 
     private static final Pattern STUDENT_ID = Pattern.compile("^U\\d{7}[A-Z]$", Pattern.CASE_INSENSITIVE);
     private static final Pattern EMAIL      = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", Pattern.CASE_INSENSITIVE);
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private InputValidator() {}
 
@@ -56,6 +59,14 @@ public final class InputValidator {
         }
     }
 
+    public static boolean isValidDate(String d) {
+        try {
+            LocalDate.parse(d, FORMATTER);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
     public static boolean isNonEmptyString(String input) {
         return input != null && !input.trim().isEmpty();
     }

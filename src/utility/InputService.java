@@ -1,6 +1,9 @@
 package utility;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
-import utility.InputValidator;
+//import utility.InputValidator;
 
 public class InputService {
 	private static final Scanner scanner = new Scanner(System.in);;
@@ -58,6 +61,18 @@ public class InputService {
 		}
 		int value = answer.isEmpty() ? 0 : Integer.parseInt(answer);
 		return value;
+	}
+
+	public static LocalDate readDate(String prompt) {
+		System.out.println(prompt);
+		String input = getScanner().nextLine();
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		try {
+			LocalDate date = LocalDate.parse(input, format);
+			return date;
+		} catch (DateTimeParseException e) {
+			return null;
+		}
 	}
 	
 	// Don't close unless finish program

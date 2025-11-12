@@ -33,14 +33,13 @@ public class Main {
 		// instantiate managers
     	ApplicationManager applicationManager = new ApplicationManager(allApplications, allInternships, allStudents);
     	ApprovalManager approvalManager = new ApprovalManager(allCompanyReps, allInternships);
-    	AuthManager authManager = new AuthManager(allUsers);
+    	AuthManager authManager = new AuthManager(allUsers, allCompanyReps);
     	InternshipManager internshipManager = new InternshipManager(allInternships);
     	
     	System.out.println("---Internship Management System---");
     	// main menu
-    	MainMenu mainMenu = new MainMenu(applicationManager, approvalManager, authManager, internshipManager, 
-		allCompanyReps, allStudents, allStaff);
-    	mainMenu.Start();
+    	MainMenu mainMenu = new MainMenu(applicationManager, approvalManager, authManager, internshipManager);
+    	mainMenu.start();
     	
 		// save when closing
 		System.out.println("[Main] Saving data to files...");
