@@ -1,6 +1,6 @@
 userID,name,password,email,major,yearOfStudy,applicationIDs
-U2310001A,Tan Wei Ling,password,tan001@e.ntu.edu.sg,CSC,2,
-U2310002B,Ng Jia Hao,password,ng002@e.ntu.edu.sg,DSAI,3,
-U2310003C,Lim Yi Xuan,password,lim003@e.ntu.edu.sg,CE,4,
+U2310001A,Tan Wei Ling,newpass123,tan001@e.ntu.edu.sg,CSC,1,APP_9407f3b8
+U2310002B,Ng Jia Hao,password,ng002@e.ntu.edu.sg,CSC,3,
+U2310003C,Lim Yi Xuan,password,lim003@e.ntu.edu.sg,EEE,3,
 U2310004D,Chong Zhi Hao,password,chong004@e.ntu.edu.sg,MAE,1,
 U2310005E,Wong Shu Hui,password,wong005@e.ntu.edu.sg,CSC,3,

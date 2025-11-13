@@ -1,17 +1,31 @@
 package boundary;
 
 import utility.InputService;
-import utility.InputValidator;
 import controller.*;
 import entity.*;
 
+/** The main boundary class (CLI View) for the application. 
+ * Handles login, registration, and exiting. 
+*/
 public class MainMenu {
-	// initial command-line interface
+    /** The application controller. */
 	private ApplicationManager applicationManager;
+
+    /** The approval controller. */
 	private ApprovalManager approvalManager;
+
+    /** The authentication controller. */
 	private AuthManager authManager;
+
+    /** The internship controller. */
 	private InternshipManager internshipManager;
 
+    /** Constructs the MainMenu. 
+     * @param applicationManager Manages applications. 
+     * @param approvalManager Manages approvals. 
+     * @param authManager Manages authentication. 
+     * @param internshipManager Manages internships. 
+    */
 	public MainMenu(ApplicationManager applicationManager, ApprovalManager approvalManager, 
 			AuthManager authManager, InternshipManager internshipManager) {
 		this.applicationManager = applicationManager;
@@ -20,6 +34,7 @@ public class MainMenu {
 		this.internshipManager = internshipManager;
 	}
 	
+    /** Starts the main application loop. */
 	public void start() {
 		int choice;
 		do {
@@ -38,6 +53,7 @@ public class MainMenu {
 		} while (choice != 3);
 	}
 
+    /** Private helper to handle the CLI logic for user login. */
 	private void handleLogin() {
 		System.out.println("\n--- Login ---");
         System.out.print("Enter UserID: ");
@@ -72,14 +88,11 @@ public class MainMenu {
         }
 	}
 
+    /** Private helper to handle the CLI logic for company representative registration. */
 	private void handleRegistration() {
         System.out.println("\n--- Company Representative Registration ---");
         System.out.print("Enter your Email: ");
-        String email = InputService.readString();
-        if (!InputValidator.isValidEmail(email)) {
-            System.out.println("Invalid email format.");
-            return;
-        }
+        String email = InputService.readEmail();
         if (authManager.userExists(email)) {
             System.out.println("Error: A user with this email already exists.");
             return;

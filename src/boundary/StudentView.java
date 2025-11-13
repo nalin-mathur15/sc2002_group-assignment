@@ -16,16 +16,35 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/** Boundary class (CLI View) for a logged-in Student. */
 public class StudentView extends AbstractView {
-
+    /** The application controller. */
     private final ApplicationManager applicationManager;
+
+    /** The internship controller. */
     private final InternshipManager internshipManager;
+
+    /** Stores the current filter value for internship status. */
     private InternshipStatus internshipFilterStatus = null;
+
+    /** Stores the current filter value for internship major. */
     private String internshipFilterMajor = null;
+
+    /** Stores the current filter value for internship company. */
     private String internshipFilterCompany = null;
+
+    /** Stores the current filter value for internship level. */
     private InternshipLevel internshipFilterLevel = null;
+
+    /** The specific Student object who is logged in. */
 	private final Student loggedInStudent;
 
+    /** Constructs a new StudentView. 
+     * @param applicationManager Manages applications. 
+     * @param authManager Manages authentication. 
+     * @param internshipManager Manages internships. 
+     * @param student The logged-in Student. 
+    */
     public StudentView(ApplicationManager applicationManager, AuthManager authManager,
                        InternshipManager internshipManager, Student student) {
         super(authManager, student);
@@ -34,6 +53,7 @@ public class StudentView extends AbstractView {
         this.loggedInStudent = student;
     }
 
+    /** Displays the main menu for the Student. */
     @Override
     public void Menu() {
         int choice;
@@ -60,6 +80,7 @@ public class StudentView extends AbstractView {
         } while (choice != 5);
     }
 
+    /** Private helper to display, filter, and apply for available internships. */
     private void viewAndFilterInternships() {
         int choice;
 		List<Internship> internshipList = internshipManager.getInternshipsForStudent(loggedInStudent);
@@ -133,6 +154,9 @@ public class StudentView extends AbstractView {
         applyForInternship((List<Internship>)filteredList);
     }
 
+    /** Private helper to handle the CLI logic for applying to an internship. 
+     * @param availableInternships The filtered list of internships. 
+    */
     private void applyForInternship(List<Internship> availableInternships) {
         System.out.printf("Select an Internship to apply for (1-%d), or 0 to go back.\n", availableInternships.size());
         System.out.printf("** Reminder: You can apply for a max of 3 internships. Current: %d **\n",
@@ -162,6 +186,7 @@ public class StudentView extends AbstractView {
         }
     }
 
+    /** Private helper to display all of the student's current applications. */
     private void viewMyApplications() {
         List<InternshipApplication> myApplications = applicationManager.getApplicationsByStudent(loggedInStudent.getUserID());
 
@@ -188,7 +213,9 @@ public class StudentView extends AbstractView {
         applicationActions(myApplications);
     }
 
-
+    /** Private helper to handle the CLI logic for acting on an application (e.g., accept offer). 
+     * @param myApplications The student's applications. 
+    */
     private void applicationActions(List<InternshipApplication> myApplications) {
         System.out.printf("Select an Application to manage (1-%d), or 0 to go back.\n", myApplications.size());
         System.out.print("Enter choice: ");
@@ -221,6 +248,7 @@ public class StudentView extends AbstractView {
         }
     }
 
+    /** Private helper to handle the CLI logic for requesting a withdrawal. */
     private void handleWithdrawalRequest() {
         System.out.println("\n--- Request Internship Withdrawal ---");
         List<InternshipApplication> myApplications = applicationManager.getApplicationsByStudent(loggedInStudent.getUserID());

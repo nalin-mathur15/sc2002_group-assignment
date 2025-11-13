@@ -3,18 +3,33 @@ import utility.DataHandler;
 import utility.InputService;
 import controller.*;
 import entity.*;
-//import entity.Internship.InternshipStatus;
-
 import java.util.Map;
 import java.util.HashMap;
 
+/**
+ * Main entry point for the Internship Placement Management System.
+ * This class handles the high-level application lifecycle:
+ * 1. Loading all data from CSV files.
+ * 2. Initializing all controller (manager) classes.
+ * 3. Starting the main menu (boundary).
+ * 4. Saving all data back to CSV files on exit.
+ */
 public class Main {
+	/** File path for the student data CSV. */
 	private static final String STUDENT_FILE = "internship_management\\src\\data\\students.csv";
-    private static final String STAFF_FILE = "internship_management\\src\\data\\staff.csv";
-    private static final String REP_FILE = "internship_management\\src\\data\\companyReps.csv";
-    private static final String INTERNSHIP_FILE = "internship_management\\src\\data\\internships.csv";
-    private static final String APPLICATION_FILE = "internship_management\\src\\data\\applications.csv";
+	/** File path for the staff data CSV. */
+	private static final String STAFF_FILE = "internship_management\\src\\data\\staff.csv";
+	/** File path for the company representative data CSV. */
+	private static final String REP_FILE = "internship_management\\src\\data\\companyReps.csv";
+	/** File path for the internship data CSV. */
+	private static final String INTERNSHIP_FILE = "internship_management\\src\\data\\internships.csv";
+	/** File path for the application data CSV. */
+	private static final String APPLICATION_FILE = "internship_management\\src\\data\\applications.csv";
 
+	/**
+     * The main method to run the application.
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
 		System.out.println("[Main] Loading data from files...");
 		

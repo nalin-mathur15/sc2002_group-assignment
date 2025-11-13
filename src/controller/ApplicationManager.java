@@ -7,13 +7,25 @@ import entity.Internship.InternshipLevel;
 import entity.Internship.InternshipStatus;
 import entity.InternshipApplication.ApplicationStatus;
 
+/** Controller class to manage student applications and internship placements. */
 public class ApplicationManager {
-    // Manages student's applications and internship placements
+    /** Maximum number of applications a student can make. */
     public final int MAX_APPS = 3;
+
+    /** In-memory map of all applications, keyed by Application ID. */
     private final Map<String, InternshipApplication> allApplications;
+
+    /** In-memory map of all internships, keyed by Internship ID. */
     private final Map<String, Internship> allInternships;
+
+    /** In-memory map of all students, keyed by Student ID. */
     private final Map<String, Student> allStudents;
     
+    /** Constructs the ApplicationManager. 
+     * @param allApplications Map of all applications. 
+     * @param allInternships Map of all internships. 
+     * @param allStudents Map of all students. 
+    */
     public ApplicationManager(Map<String, InternshipApplication> allApplications,
                               Map<String, Internship> allInternships,
                               Map<String, Student> allStudents) {
@@ -22,7 +34,11 @@ public class ApplicationManager {
         this.allStudents = allStudents;
     }
 
-    // student submits an application for an internship
+    /** Logic to submit a new application for a student. 
+     * @param student The student applying. 
+     * @param internship The internship being applied for. 
+     * @return true on success, false otherwise. 
+    */
     public String submitApplication(Student student, Internship internship) {
         for (String appID : student.getSubmittedApplicationIDs()) {
             InternshipApplication app = allApplications.get(appID);
@@ -66,6 +82,10 @@ public class ApplicationManager {
         return null;
     }
 
+    /** Logic for a student to accept a SUCCESSFUL application. 
+     * @param applicationID The ID of the application to accept. 
+     * @return true on success, false otherwise. 
+    */
     public boolean acceptPlacement(String applicationID) {
         InternshipApplication app = allApplications.get(applicationID);
         if (app == null) { 
@@ -113,6 +133,10 @@ public class ApplicationManager {
         return true;
     }
 
+    /** Logic for a student to request withdrawal from an application. 
+     * @param applicationID The ID of the application to withdraw from. 
+     * @return true on success, false otherwise. 
+    */
     public boolean requestWithdrawal(String applicationID) {
         InternshipApplication app = allApplications.get(applicationID);
         if (app == null) { System.out.println("Error: Application not found. "); return false; }
@@ -126,8 +150,12 @@ public class ApplicationManager {
         return false;
     }
 
-
-        public boolean updateApplicationStatus(String applicationId, ApplicationStatus newStatus) {
+    /** Logic for a Company Rep to update an application status (e.g., to SUCCESSFUL). 
+     * @param applicationId The ID of the application. 
+     * @param newStatus The new status. 
+     * @return true on success, false otherwise. 
+    */
+    public boolean updateApplicationStatus(String applicationId, ApplicationStatus newStatus) {
         InternshipApplication app = allApplications.get(applicationId);
         if (app == null) {
             System.out.println("Application not found.");
@@ -163,6 +191,11 @@ public class ApplicationManager {
         return true;
     }
 
+    /** Logic for a Staff member to approve or reject a withdrawal request. 
+     * @param applicationID The ID of the application. 
+     * @param approve true to approve, false to reject. 
+     * @return true on success, false otherwise. 
+    */
     public boolean approveWithdrawalRequest(String applicationID, boolean approve) {
         InternshipApplication app = allApplications.get(applicationID);
         if (app == null) { System.out.println("Error: Application not found. "); return false; }
@@ -200,7 +233,10 @@ public class ApplicationManager {
         return false;
     }
 
-    // all applications for a specific internship
+    /** Gets all applications for a specific internship. 
+     * @param internshipId The internship ID. 
+     * @return A list of applications. 
+    */
     public List<InternshipApplication> getApplicationsForInternship(String internshipId) {
         List<InternshipApplication> result = new ArrayList<>();
         Internship internship = allInternships.get(internshipId);
@@ -213,7 +249,10 @@ public class ApplicationManager {
         return result;
     }
 
-    // all applications by a student
+    /** Gets all applications submitted by a specific student. 
+     * @param studentId The student ID. 
+     * @return A list of applications. 
+    */
     public List<InternshipApplication> getApplicationsByStudent(String studentId) {
         List<InternshipApplication> result = new ArrayList<>();
         Student student = allStudents.get(studentId);
@@ -226,7 +265,10 @@ public class ApplicationManager {
         return result;
     }
 
-    // placement outcome for a student
+    /** Checks if a student has an accepted placement. 
+     * @param student The student. 
+     * @return The confirmed Internship, or null if none. 
+    */
     public Internship getConfirmedPlacement(Student student) {
         for (String appID : student.getSubmittedApplicationIDs()) {
             InternshipApplication app = allApplications.get(appID);
@@ -237,7 +279,9 @@ public class ApplicationManager {
         return null;
     }
 
-    // Get all pending applications (for admin/rep)
+    /** Gets all applications with PENDING status. 
+     * @return A list of applications. 
+    */
     public List<InternshipApplication> getPendingApplications() {
         List<InternshipApplication> pending = new ArrayList<>();
         for (InternshipApplication a : allApplications.values()) {
@@ -248,6 +292,9 @@ public class ApplicationManager {
         return pending;
     }
     
+    /** Gets all applications with PENDING_WITHDRAWAL status. 
+     * @return A list of applications. 
+    */
     public List<InternshipApplication> getPendingWithdrawals() {
         List<InternshipApplication> pendingWithdrawals = new ArrayList<>();
         for (InternshipApplication a : allApplications.values()) {
@@ -258,18 +305,39 @@ public class ApplicationManager {
         return pendingWithdrawals;
     }
 
+    /** Gets all students. 
+     * @return A collection of all students. 
+    */
     public Collection<Student> getAllStudents() {
         return allStudents.values();
     }
+
+    /** Gets a single student by ID. 
+     * @param studentID The student ID. 
+     * @return The Student object, or null.
+    */
     public Student getStudentbyID(String studentID) {
         return allStudents.get(studentID);
     }
+    
+    /** Gets all applications. 
+     * @return A collection of all applications. 
+    */
     public Collection<InternshipApplication> getAllApplications() {
         return allApplications.values();
     }
+
+    /** Gets a single application by ID. 
+     * @param appID The application ID. 
+     * @return The InternshipApplication object, or null. 
+    */
     public InternshipApplication getApplicationbyID(String appID) {
         return allApplications.get(appID);
     }
+    
+    /** Gets all internships. 
+     * @return A collection of all internships. 
+    */
     public Collection<Internship> getAllInternships() {
         return allInternships.values();
     }

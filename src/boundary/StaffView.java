@@ -12,24 +12,55 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/** Boundary class (CLI View) for a logged-in Staff member. */
 public class StaffView extends AbstractView {
 
+    /** The application controller. */
     private final ApplicationManager applicationManager;
+
+    /** The approval controller. */
     private final ApprovalManager approvalManager;
+
+    /** The internship controller. */
     private final InternshipManager internshipManager;
+
+    /** The specific Staff object who is logged in. */
     private final Staff loggedInStaff;
 
+    /** Stores the current filter value for internship status. */
     private InternshipStatus internshipFilterStatus = null;
+
+    /** Stores the current filter value for internship major. */
     private String internshipFilterMajor = null;
+
+    /** Stores the current filter value for internship company. */
     private String internshipFilterCompany = null;
+
+    /** Stores the current filter value for internship level. */
     private InternshipLevel internshipFilterLevel = null;
+
+    /** Stores the current filter value for student year. */
     private Integer studentFilterYear = null;
+
+    /** Stores the current filter value for student major. */
     private String studentFilterMajor = null;
+
+    /** Stores the current filter value for representative approval status. */
     private Boolean repFilterApproved = null;
+
+    /** Stores the current filter value for representative company. */
     private String repFilterCompany = null;
+
+    /** Stores the current filter value for application status. */
     private ApplicationStatus appFilterStatus = null;
 
-
+    /** Constructs a new StaffView. 
+     * @param applicationManager Manages applications. 
+     * @param approvalManager Manages approvals. 
+     * @param authManager Manages authentication. 
+     * @param internshipManager Manages internships. 
+     * @param staff The logged-in Staff member. 
+    */
     public StaffView(ApplicationManager applicationManager, ApprovalManager approvalManager,
                      AuthManager authManager, InternshipManager internshipManager, Staff staff) {
         super(authManager, staff);
@@ -39,6 +70,7 @@ public class StaffView extends AbstractView {
         this.loggedInStaff = staff;
     }
 
+    /** Displays the main menu for the Staff member. */
     @Override
     public void Menu() {
         int choice;
@@ -73,8 +105,7 @@ public class StaffView extends AbstractView {
         } while (choice != 9);
     }
 
-    // account requests
-
+    /** Private helper to view and action pending Company Representative account requests. */
     private void viewAccountRequests() {
         List<CompanyRepresentative> pendingReps = approvalManager.getPendingRepresentativeApprovals();
         if (pendingReps.isEmpty()) {
@@ -86,6 +117,9 @@ public class StaffView extends AbstractView {
         approveCompany(pendingReps);
     }
 
+    /** Private helper to handle the CLI logic for approving/rejecting a rep. 
+     * @param pendingReps The list of pending representatives. 
+    */
     private void approveCompany(List<CompanyRepresentative> pendingReps) {
         System.out.println("\nSelect a representative to approve/reject (1-" + pendingReps.size() + ").");
         System.out.println("Enter '0' to go back.");
@@ -110,9 +144,7 @@ public class StaffView extends AbstractView {
         }
     }
 
-
-    // internship requests
-
+    /** Private helper to view and action pending internship posting requests. */
     private void viewInternshipRequests() {
         List<Internship> pendingInternships = approvalManager.getPendingInternshipApprovals();
         if (pendingInternships.isEmpty()) {
@@ -124,6 +156,9 @@ public class StaffView extends AbstractView {
         approveInternship(pendingInternships);
     }
     
+    /** Private helper to handle the CLI logic for approving/rejecting an internship. 
+     * @param pendingInternships The list of pending internships. 
+    */
     private void approveInternship(List<Internship> pendingInternships) {
          System.out.println("\nSelect an internship to approve/reject (1-" + pendingInternships.size() + ").");
         System.out.println("Enter '0' to go back.");
@@ -148,8 +183,7 @@ public class StaffView extends AbstractView {
         }
     }
 
-    // withdrawal requests
-
+    /** Private helper to view and action pending student withdrawal requests. */
     private void viewWithdrawalRequests() {
         System.out.println("\n--- Student Withdrawal Requests ---");
         
@@ -198,8 +232,7 @@ public class StaffView extends AbstractView {
         }
     }
 
-    // filter internships
-
+    /** Private helper to display a filterable list of all internships in the system. */
     private void viewAndFilterInternships() {
         int choice;
         do {
@@ -268,8 +301,7 @@ public class StaffView extends AbstractView {
         } while (choice != 0);
     }
 
-    // filter students
-
+    /** Private helper to display a filterable list of all students. */
     private void viewAndFilterStudents() {
         int choice;
         do {
@@ -315,8 +347,7 @@ public class StaffView extends AbstractView {
         } while (choice != 0);
     }
 
-    // filter company reps
-
+    /** Private helper to display a filterable list of all company representatives. */
     private void viewAndFilterCompanyReps() {
         int choice;
         do {
@@ -363,8 +394,7 @@ public class StaffView extends AbstractView {
         } while (choice != 0);
     }
 
-    // filter applications
-
+    /** Private helper to display a filterable list of all applications. */
     private void viewAndFilterApplications() {
         int choice;
         do {
@@ -404,12 +434,10 @@ public class StaffView extends AbstractView {
             }
         } while (choice != 0);
     }
-    
-    
-    // change pwd
-    
-    // helpers
 
+    /** Private helper to print a formatted list of students. 
+     * @param students The collection to display. 
+    */
     private void displayStudents(Collection<Student> students) {
          if (students.isEmpty()) {
             System.out.println("No students found matching this filter.");
@@ -430,6 +458,9 @@ public class StaffView extends AbstractView {
         System.out.println("-------------------------------------------------------------------");
     }
 
+    /** Private helper to print a formatted list of company reps. 
+     * @param reps The collection to display. 
+    */
     private void displayCompanyReps(Collection<CompanyRepresentative> reps) {
          if (reps.isEmpty()) {
             System.out.println("No representatives found matching this filter.");
@@ -450,6 +481,9 @@ public class StaffView extends AbstractView {
         System.out.println("--------------------------------------------------------------------------------------");
     }
 
+    /** Private helper to print a formatted list of applications. 
+     * @param applications The collection to display. 
+    */
     private void displayApplications(Collection<InternshipApplication> applications) {
          if (applications.isEmpty()) {
             System.out.println("No applications found matching this filter.");

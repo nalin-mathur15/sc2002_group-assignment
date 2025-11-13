@@ -1,1 +1,2 @@
 internshipID,title,description,level,preferredMajor,openDate,closeDate,status,companyName,repID,slotsTotal,slotsFilled,isVisible
+INT-076A717E,Basic CS V2,A basic job for Year 1s,BASIC,CSC,2025-12-01,2026-01-10,APPROVED,TechBros,representative@company.com,5,0,true

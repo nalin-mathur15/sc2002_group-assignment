@@ -8,18 +8,29 @@ import entity.User;
 import utility.InputService;
 import utility.InputValidator;
 
+/** Abstract base class for all user-facing (boundary) views. */
 public abstract class AbstractView {
-
+    
+    /** The authentication controller for managing user logins and passwords. */
     protected final AuthManager authManager;
+
+    /** The User object representing the currently logged-in user. */
     protected final User loggedInUser;
 
+    /** 
+     * Constructs a new AbstractView. 
+     * @param authManager The authentication manager. 
+     * @param loggedInUser The user who is logged in. 
+    */
     public AbstractView(AuthManager authManager, User loggedInUser) {
         this.authManager = authManager;
         this.loggedInUser = loggedInUser;
     }
 
+    /** Abstract method to display the main menu for the specific view. */
     public abstract void Menu();
 
+    /** Handles the user interface logic for changing the logged-in user's password. */
     protected void changePassword() {
         System.out.println("\n--- Change Password ---");
         System.out.print("Please enter your old password: ");
@@ -40,6 +51,9 @@ public abstract class AbstractView {
         }
     }
 
+    /** Handles the task of displaying a given list of internships. 
+     * @param internships The Collection of internships to display.
+    */
     protected void displayInternships(Collection<Internship> internships) {
         if (internships == null || internships.isEmpty()) {
             System.out.println("No internships found matching this filter.");

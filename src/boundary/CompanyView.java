@@ -14,21 +14,34 @@ import entity.Internship.InternshipStatus;
 import entity.InternshipApplication.ApplicationStatus;
 import java.time.LocalDate;
 
-/**
- * Boundary class (CLI View) for a logged-in Company Representative.
- * Handles all menu options and I/O for their functions.
- */
+/** Boundary class (CLI View) for a logged-in Company Representative. 
+ * Handles all menu options and I/O for their functions. 
+*/
 public class CompanyView extends AbstractView {
-
+    /** The application controller for managing student applications. */
     private final ApplicationManager applicationManager;
-    private final InternshipManager internshipManager;
-    private final CompanyRepresentative loggedInRep; // Use the specific type
 
-    // --- Filter State Fields ---
+    /** The internship controller for managing internship listings. */
+    private final InternshipManager internshipManager;
+
+    /** The specific CompanyRepresentative object who is logged in. */
+    private final CompanyRepresentative loggedInRep;
+
+    /** Stores the current filter value for internship status. */
     private InternshipStatus internshipFilterStatus = null;
+
+    /** Stores the current filter value for internship major. */
     private String internshipFilterMajor = null;
+
+    /** Stores the current filter value for internship level. */
     private InternshipLevel internshipFilterLevel = null;
 
+    /** Constructs a new CompanyView. 
+     * @param applicationManager Manages applications. 
+     * @param authManager Manages authentication. 
+     * @param internshipManager Manages internships. 
+     * @param cr The logged-in Company Representative. 
+    */
     public CompanyView(ApplicationManager applicationManager, AuthManager authManager,
                        InternshipManager internshipManager, CompanyRepresentative cr) {
         super(authManager, cr);
@@ -37,6 +50,7 @@ public class CompanyView extends AbstractView {
         this.loggedInRep = cr;
     }
 
+    /** Displays the main menu for the Company Representative. */
     @Override
     public void Menu() {
         int choice;
@@ -60,9 +74,7 @@ public class CompanyView extends AbstractView {
         } while (choice != 4);
     }
 
-    /**
-     * Handles the logic for creating a new internship.
-     */
+    /** Private helper to handle the CLI logic for creating a new internship. */
     private void createInternship() {
         if (loggedInRep.getPostedInternshipIDs().size() >= 5) {
             System.out.println("Error: You have already posted the maximum of 5 internships.");
@@ -113,10 +125,7 @@ public class CompanyView extends AbstractView {
         // No recursive call to Menu()
     }
 
-    /**
-     * Replaces ViewInternshipsCreated.
-     * Provides a looping menu to filter and manage internships.
-     */
+   /** Private helper to display and manage the representative's own internships with filters. */
     private void viewAndFilterMyInternships() {
         int choice;
         do {
@@ -136,7 +145,7 @@ public class CompanyView extends AbstractView {
             System.out.println("  Major:  " + (internshipFilterMajor == null ? "Any" : internshipFilterMajor));
             System.out.println("  Level:  " + (internshipFilterLevel == null ? "Any" : internshipFilterLevel));
             
-            displayInternshipList(filteredList); // Use helper to print
+            displayInternships(filteredList); // Use helper to print
 
             // 3. Show Menu
             System.out.println("\n--- Manage Internships ---");
@@ -189,36 +198,10 @@ public class CompanyView extends AbstractView {
         } while (choice != 0);
     }
     
-    /**
-     * Helper to display a list of internships.
-     */
-    private void displayInternshipList(List<Internship> internships) {
-        if (internships.isEmpty()) {
-            System.out.println("No internships found matching this filter.");
-            return;
-        }
-        System.out.println("---------------------------------------------------------------------------------------------------------");
-        System.out.printf("%-3s | %-25s | %-12s | %-10s | %-12s | %-7s | %s\n", 
-            "#", "Title", "Status", "Major", "Level", "Visible", "Slots");
-        System.out.println("---------------------------------------------------------------------------------------------------------");
-        for (int i = 0; i < internships.size(); i++) {
-            Internship intern = internships.get(i);
-            System.out.printf("%-3d | %-25s | %-12s | %-10s | %-12s | %-7s | %d/%d\n",
-                    (i + 1),
-                    intern.getTitle(),
-                    intern.getStatus(),
-                    intern.getPreferredMajor(),
-                    intern.getLevel(),
-                    intern.isVisible() ? "ON" : "OFF",
-                    intern.getSlotsFilled(),
-                    intern.getNumberOfSlots());
-        }
-        System.out.println("---------------------------------------------------------------------------------------------------------");
-    }
-
-    /**
-     * A sub-menu for managing a single, selected internship.
-     */
+    
+    /** Private helper to display a sub-menu for managing a single selected internship. 
+     * @param intern The internship to manage. 
+    */
     private void manageInternshipMenu(Internship intern) {
         int choice;
         do {
@@ -234,17 +217,16 @@ public class CompanyView extends AbstractView {
             
             switch (choice) {
                 case 1 -> viewApplicationsForInternship(intern);
-                case 2 -> intern.setVisibility(!intern.isVisible());
+                case 2 -> internshipManager.toggleVisibility(intern.getInternshipID());
                 case 3 -> editInternship(intern);
                 case 0 -> System.out.println("Returning to internships list...");
             }
         } while (choice != 0);
     }
     
-    /**
-     * Handles editing an internship's details.
-     * Per assignment rules, only allowed if status is PENDING.
-     */
+    /** Private helper to handle the CLI logic for editing a PENDING internship. 
+     * @param intern The internship to edit. 
+    */
     private void editInternship(Internship intern) {
         if (intern.getStatus() != InternshipStatus.PENDING) {
             System.out.println("Error: This internship cannot be edited as it has already been processed by Staff.");
@@ -286,9 +268,9 @@ public class CompanyView extends AbstractView {
         System.out.println("Internship details updated.");
     }
 
-    /**
-     * Handles viewing and approving/rejecting applications for one internship.
-     */
+    /** Private helper to display all student applications for a specific internship. 
+     * @param intern The internship to view applications for. 
+    */
     private void viewApplicationsForInternship(Internship intern) {
         List<InternshipApplication> listApp = applicationManager.getApplicationsForInternship(intern.getInternshipID());
 
@@ -318,9 +300,9 @@ public class CompanyView extends AbstractView {
         handleApplicationApproval(listApp);
     }
 
-    /**
-     * Handles the logic for approving or rejecting a single application.
-     */
+    /** Private helper to handle the CLI logic for approving or rejecting a selected application. 
+     * @param listApp The list of applications for an internship. 
+    */
     private void handleApplicationApproval(List<InternshipApplication> listApp) {
         System.out.println("\nSelect an Application to approve or reject (1-" + listApp.size() + ").");
         System.out.println("Otherwise, enter '0' to go back.");

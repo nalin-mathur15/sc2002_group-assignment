@@ -10,16 +10,24 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-//import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Utility class for loading and saving application data from/to CSV files. */
 public final class DataHandler {
-
+    /** The delimiter for separating fields in a CSV line. */
     private static final String DELIMITER = ",";
+
+    /** The delimiter for separating items within a single field (e.g., a list of IDs). */
     private static final String LIST_DELIMITER = ";";
+    
+    /** Private constructor to prevent instantiation of this utility class. */
     private DataHandler() {}
 
+    /** Loads students from a CSV file. 
+     * @param path The file path. 
+     * @return A map of students, keyed by User ID. 
+    */
     public static Map<String, Student> loadStudents(String path) {
         Map<String, Student> students = new HashMap<>();
         if (!Files.exists(Paths.get(path))) {
@@ -79,6 +87,10 @@ public final class DataHandler {
         return students;
     }
 
+    /** Saves students to a CSV file. 
+     * @param path The file path. 
+     * @param students The map of students to save. 
+    */
     public static void saveStudents(String path, Map<String, Student> students) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             writer.write("userID,name,password,email,major,yearOfStudy,applicationIDs");
@@ -103,6 +115,10 @@ public final class DataHandler {
         System.out.println("[DataHandler] Saved " + students.size() + " students to " + path);
     }
 
+    /** Loads staff from a CSV file. 
+     * @param path The file path. 
+     * @return A map of staff, keyed by User ID. 
+    */
     public static Map<String, Staff> loadStaff(String path) {
         Map<String, Staff> staff = new HashMap<>();
         if (!Files.exists(Paths.get(path))) {
@@ -146,6 +162,10 @@ public final class DataHandler {
         return staff;
     }
 
+    /** Saves staff to a CSV file. 
+     * @param path The file path. 
+     * @param staff The map of staff to save. 
+    */
     public static void saveStaff(String path, Map<String, Staff> staff) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             writer.write("userID,name,email,password,staffDepartment,role");
@@ -169,6 +189,10 @@ public final class DataHandler {
         System.out.println("[DataHandler] Saved " + staff.size() + " staff to " + path);
     }
 
+    /** Loads company representatives from a CSV file. 
+     * @param path The file path. 
+     * @return A map of reps, keyed by User ID. 
+    */
     public static Map<String, CompanyRepresentative> loadCompanyReps(String path) {
         Map<String, CompanyRepresentative> reps = new HashMap<>();
         if (!Files.exists(Paths.get(path))) {
@@ -223,6 +247,10 @@ public final class DataHandler {
         return reps;
     }
 
+    /** Saves company representatives to a CSV file. 
+     * @param path The file path. 
+     * @param reps The map of reps to save. 
+    */
     public static void saveCompanyReps(String path, Map<String, CompanyRepresentative> reps) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             writer.write("userID,name,email,password,companyName,department,position,isApproved,internshipIDs");
@@ -250,6 +278,10 @@ public final class DataHandler {
         System.out.println("[DataHandler] Saved " + reps.size() + " company reps to " + path);
     }
 
+    /** Loads internships from a CSV file. 
+     * @param path The file path. 
+     * @return A map of internships, keyed by Internship ID. 
+    */
     public static Map<String, Internship> loadInternships(String path) {
         Map<String, Internship> internships = new HashMap<>();
         if (!Files.exists(Paths.get(path))) {
@@ -297,6 +329,10 @@ public final class DataHandler {
         return internships;
     }
 
+    /** Saves internships to a CSV file. 
+     * @param path The file path. 
+     * @param internships The map of internships to save. 
+    */
     public static void saveInternships(String path, Map<String, Internship> internships) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             writer.write("internshipID,title,description,level,preferredMajor,openDate,closeDate,status,companyName,repID,slotsTotal,slotsFilled,isVisible");
@@ -327,7 +363,10 @@ public final class DataHandler {
         System.out.println("[DataHandler] Saved " + internships.size() + " internships to " + path);
     }
 
-    
+    /** Loads applications from a CSV file. 
+     * @param path The file path. 
+     * @return A map of applications, keyed by Application ID. 
+    */
     public static Map<String, InternshipApplication> loadApplications(String path) {
         Map<String, InternshipApplication> applications = new HashMap<>();
         if (!Files.exists(Paths.get(path))) {
@@ -362,6 +401,10 @@ public final class DataHandler {
         return applications;
     }
 
+    /** Saves applications to a CSV file. 
+     * @param path The file path. 
+     * @param applications The map of applications to save. 
+    */
     public static void saveApplications(String path, Map<String, InternshipApplication> applications) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             writer.write("applicationID,internshipID,studentID,status,studentAccepted");
