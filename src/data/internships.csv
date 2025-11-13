@@ -1,3 +1,1 @@
 internshipID,title,description,level,preferredMajor,openDate,closeDate,status,companyName,repID,slotsTotal,slotsFilled,isVisible
-INT-fc39d897,Assistant Mechanical Engineer,Assist a senior engineer in day-to-day operations.,BASIC,MAE,2025-11-10,2025-11-21,APPROVED,TechBros,representative@company.com,10,0,true
-INT-3b817191,Mechanical Engineer,build planes ,ADVANCED,MAE,2025-11-10,2025-11-21,APPROVED,TechBros,representative@company.com,10,0,true

@@ -26,9 +26,6 @@ public abstract class AbstractView {
         do {
             System.out.print("Please enter your new password: ");
             newPword = InputService.readString();
-            if (!InputValidator.nonEmpty(newPword)) {
-                System.out.println("Password cannot be empty.");
-            }
         } while (!InputValidator.nonEmpty(newPword));
 
         boolean success = authManager.changePassword(loggedInUser, oldPword, newPword);

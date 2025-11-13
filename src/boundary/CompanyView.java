@@ -58,8 +58,7 @@ public class CompanyView extends AbstractView {
         System.out.print("Enter Description: ");
         String internDescription = InputService.readString();
         
-        System.out.println("Enter Internship Level: \n1. Basic \n2. Intermediate \n3. Advanced");
-        System.out.print("Enter choice: ");
+        System.out.println("Enter Internship Level (1-3): \n1. Basic \n2. Intermediate \n3. Advanced");
         int levelChoice = InputService.readIntRange(1, 3);
         InternshipLevel internLevel = switch (levelChoice) {
             case 1 -> InternshipLevel.BASIC;
@@ -68,7 +67,7 @@ public class CompanyView extends AbstractView {
             default -> InternshipLevel.BASIC;
         };
         
-        System.out.print("Enter Preferred Major: ");
+        System.out.println("Enter Preferred Major: ");
         String internMajor = InputService.readString();
         LocalDate internOpenDate = null;
         do {
@@ -85,6 +84,10 @@ public class CompanyView extends AbstractView {
         
         System.out.print("Enter Number of Slots (max 10): ");
         int internSlots = InputService.readIntRange(1, 10);
+        while(internSlots == 0) {
+            System.out.println("Internship may not have 0 slots. Please retry: ");
+            internSlots = InputService.readIntRange(1, 10);
+        }
         
         internshipManager.createInternship(
             internTitle, internDescription, internLevel, internMajor, 
@@ -103,7 +106,7 @@ public class CompanyView extends AbstractView {
 		PerformAction(listInternship);
 	}
 	
-	public void PerformAction(List<Internship> listIntern) {
+	private void PerformAction(List<Internship> listIntern) {
 		System.out.println("Select an Internship to view applications.");
 		System.out.println("Otherwise, enter '0' to go back to menu.");
 		int choice = InputService.readInt();

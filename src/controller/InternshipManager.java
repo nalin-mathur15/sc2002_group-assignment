@@ -18,7 +18,7 @@ public class InternshipManager {
     public void createInternship(String title, String description, InternshipLevel level, String major,
                                  LocalDate openDate, LocalDate closeDate, CompanyRepresentative rep, int slots)  {
         
-        String internID = "INT-" + UUID.randomUUID().toString().substring(0, 8);
+        String internID = "INT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         Internship newIntern = new Internship(
             internID, title, description, level, major,
             openDate, closeDate, rep.getCompanyName(), rep.getUserID(), slots
