@@ -73,7 +73,7 @@ public class CompanyView extends AbstractView {
         LocalDate internOpenDate = null;
         do {
 			internOpenDate = InputService.readDate("Enter opening date (dd/MM/yyyy): ");
-		} while(internOpenDate != null);
+		} while(internOpenDate == null);
 
 		LocalDate internCloseDate = null;
         do {

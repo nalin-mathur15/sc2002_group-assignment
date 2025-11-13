@@ -1,1 +1,3 @@
-CompanyRepID,Name,CompanyName,Department,Position,Email,Status
+userID,name,email,password,companyName,department,position,isApproved,internshipIDs
+representative@company.com,Albert Johnson,representative@company.com,password,TechBros,The Important Department,Important Position,true,INT-d80533d0;INT-0446ce9f;INT-3b817191;INT-fc39d897
+reprep@meta.com,reprep peprep,reprep@meta.com,password,meta,AI,smart guy,true,

@@ -51,7 +51,7 @@ public class MainMenu {
             System.out.println("Login failed. Invalid UserID or Password.");
             return;
         }
-        System.out.println("Login successful! Welcome, " + user.getName());
+        System.out.println("Welcome, " + user.getName());
 
         if (user instanceof Student) {
             StudentView studentView = new StudentView(applicationManager, authManager, internshipManager, (Student) user);

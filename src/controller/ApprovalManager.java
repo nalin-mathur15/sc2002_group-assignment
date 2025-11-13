@@ -59,11 +59,13 @@ public class ApprovalManager {
         }
         if (approve) {
             internship.setStatus(InternshipStatus.APPROVED);
+            
             System.out.println("Internship \"" + internship.getTitle() + "\" (" + internshipID + ") approved. ");
         } else {
             internship.setStatus(InternshipStatus.REJECTED);
             System.out.println("Internship \"" + internship.getTitle() + "\" (" + internshipID + ") rejected. ");
         }
+        internship.setVisibility(approve);
         return true;
     }
     public Collection<CompanyRepresentative> getAllRepresentatives() {

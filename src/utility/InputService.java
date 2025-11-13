@@ -1,11 +1,12 @@
 package utility;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 //import utility.InputValidator;
 
-public class InputService {
+public final class InputService {
 	private static final Scanner scanner = new Scanner(System.in);;
 	    
 	// Prevent instantiation
@@ -18,54 +19,58 @@ public class InputService {
 	// Convenience methods
 	public static String readString(String prompt) {
 		System.out.print(prompt);
-		String answer = getScanner().nextLine();
-		while (!InputValidator.isNonEmptyString(answer)){
-			System.out.print("Input cannot be empty. Please retry: ");
-			answer = getScanner().nextLine();
-		}
-		return answer;
+		return readString();
 	}
 	public static String readString() {
-		String answer = getScanner().nextLine();
-		while (!InputValidator.isNonEmptyString(answer)){
-			System.out.print("Input cannot be empty. Please retry: ");
-			answer = getScanner().nextLine();
-		}
-		return answer;
+		while(true) {
+            String input = scanner.nextLine();
+            if (input.trim().isEmpty()) {
+                System.out.print("Input cannot be empty. Please try again: ");
+                continue;
+            }
+            return input;
+        }
 	}
 	
+	public static int readInt() {
+        while(true) {
+            String input = scanner.nextLine();
+            if (input.trim().isEmpty()) {
+                System.out.print("Input cannot be empty. Please enter a number: ");
+                continue;
+            }
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.print("Invalid input. Please enter a whole number: ");
+            }
+        }
+    }
+
 	public static int readInt(String prompt) {
 		System.out.print(prompt);
-		String answer = getScanner().nextLine();
-		while (!InputValidator.isValidInteger(answer)){
-			System.out.print("Invalid integer. Please retry: ");
-			answer = getScanner().nextLine();
-		}
-		int value = answer.isEmpty() ? 0 : Integer.parseInt(answer);
-		return value;
+		return readInt();
 	}
 
 	public static int readIntRange(int low, int high) {
-		int val = getScanner().nextInt();
-		while (val < low || val > high) {
-			System.out.println("[Input Service] Invalid choice. Please retry.");
-			val = getScanner().nextInt();
-		}
-		return val;
-	}
-	public static int readInt() {
-		String answer = getScanner().nextLine();
-		while (!InputValidator.isValidInteger(answer)){
-			System.out.print("Invalid integer. Please retry: ");
-			answer = getScanner().nextLine();
-		}
-		int value = answer.isEmpty() ? 0 : Integer.parseInt(answer);
-		return value;
+        while (true) {
+            int input = readInt();
+            if (input >= low && input <= high) {
+                return input;
+            } else {
+                System.out.printf("Invalid range. Please enter a number between %d and %d: ", low, high);
+            }
+        }
+    }
+
+	public static int readIntRange(int low, int high, String prompt) {
+		System.out.print(prompt);
+		return readIntRange(low, high);
 	}
 
 	public static LocalDate readDate(String prompt) {
 		System.out.println(prompt);
-		String input = getScanner().nextLine();
+		String input = scanner.nextLine();
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		try {
 			LocalDate date = LocalDate.parse(input, format);
@@ -77,6 +82,6 @@ public class InputService {
 	
 	// Don't close unless finish program
 	public static void closeScanner() {
-		scanner.close();
+		if (scanner != null) { scanner.close(); }
 	}
 }

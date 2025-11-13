@@ -38,10 +38,6 @@ public class StaffView extends AbstractView {
         this.loggedInStaff = staff;
     }
 
-    /**
-     * Displays the main menu for Staff.
-     * This method loops until the user chooses to logout.
-     */
     @Override
     public void Menu() {
         int choice;
