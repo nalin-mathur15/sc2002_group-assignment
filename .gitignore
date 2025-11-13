@@ -1,9 +1,7 @@
 *.class
 
 bin/
-
-# Javadoc output
-html/
+lib/
 
 # Package Files
 *.jar
