@@ -12,6 +12,7 @@ import entity.InternshipApplication;
 import entity.InternshipApplication.ApplicationStatus;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,7 +71,8 @@ public class StudentView extends AbstractView {
                     .filter(i -> internshipFilterMajor == null || i.getPreferredMajor().equalsIgnoreCase(internshipFilterMajor))
                     .filter(i -> internshipFilterCompany == null || i.getCompanyName().equalsIgnoreCase(internshipFilterCompany))
                     .filter(i -> internshipFilterLevel == null || i.getLevel() == internshipFilterLevel)
-                    .collect(Collectors.toList());
+                    .sorted(Comparator.comparing(i -> i.getTitle()))
+					.collect(Collectors.toList());
 
             System.out.println("\n--- Filter Internships ---");
             System.out.println("Current Filters:");
@@ -149,10 +151,12 @@ public class StudentView extends AbstractView {
         int confirm = InputService.readIntRange(1, 2);
 
         if (confirm == 1) {
-            boolean success = applicationManager.submitApplication(loggedInStudent, selectedInternship);
-            if (!success) {
+            String error = applicationManager.submitApplication(loggedInStudent, selectedInternship);
+            if (error != null) {
                 System.out.println("Application failed. Please check the error message above.");
-            }
+            } else {
+				System.out.println("Application for \"" + selectedInternship.getTitle() + "\" submitted successfully!");
+			}
         } else {
             System.out.println("Application cancelled.");
         }
@@ -268,29 +272,5 @@ public class StudentView extends AbstractView {
         } else {
             System.out.println("Withdrawal cancelled.");
         }
-    }
-
-	// helpers
-
-	private void displayInternships(Collection<Internship> internships) {
-        if (internships == null || internships.isEmpty()) {
-            System.out.println("No internships found matching this filter.");
-            return;
-        }
-        int i = 1;
-        System.out.println("--------------------------------------------------------------------------------------------------");
-        System.out.printf("%-3s | %-25s | %-20s | %-12s | %-12s | %-10s\n", 
-            "#", "Title", "Company", "Status", "Level", "Major");
-        System.out.println("--------------------------------------------------------------------------------------------------");
-        for (Internship intern : internships) {
-            System.out.printf("%-3d | %-25s | %-20s | %-12s | %-12s | %-10s\n",
-                    i++,
-                    intern.getTitle(),
-                    intern.getCompanyName(),
-                    intern.getStatus(),
-                    intern.getLevel(),
-                    intern.getPreferredMajor());
-        }
-        System.out.println("--------------------------------------------------------------------------------------------------");
     }
 }

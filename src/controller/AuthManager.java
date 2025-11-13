@@ -6,8 +6,6 @@ import entity.CompanyRepresentative;
 import entity.User;
 
 public class AuthManager {
-    // authenticate log in and password change
-
     private Map<String, User> allUsers;
     private Map<String, CompanyRepresentative> allCompanyReps;
 

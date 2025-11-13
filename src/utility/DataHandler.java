@@ -279,7 +279,7 @@ public final class DataHandler {
                                 Integer.parseInt(data[10]) // slotsTotal
                         );
                         internship.setStatus(InternshipStatus.valueOf(data[7].toUpperCase()));
-                        internship.setNumberOfSlots(Integer.parseInt(data[11]));
+                        internship.setSlotsFilled(Integer.parseInt(data[11]));
                         internship.setVisibility(Boolean.parseBoolean(data[12]));
 
                         internships.put(internship.getInternshipID(), internship);
@@ -343,9 +343,10 @@ public final class DataHandler {
                 String[] data = line.split(DELIMITER);
 
                 try {
-                     if (data.length == 4) {
+                     if (data.length == 5) {
                         InternshipApplication app = new InternshipApplication(data[0], data[1], data[2]);
                         app.setStatus(ApplicationStatus.valueOf(data[3].toUpperCase()));
+                        app.studentConfirmation(Boolean.parseBoolean(data[4]));
                         applications.put(app.getApplicationID(), app);
                     } else {
                          System.err.println("[DataHandler] Skipping malformed application line: " + line);
@@ -363,7 +364,7 @@ public final class DataHandler {
 
     public static void saveApplications(String path, Map<String, InternshipApplication> applications) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-            writer.write("applicationID,internshipID,studentID,status");
+            writer.write("applicationID,internshipID,studentID,status,studentAccepted");
             writer.newLine();
 
             for (InternshipApplication app : applications.values()) {
@@ -371,7 +372,8 @@ public final class DataHandler {
                         app.getApplicationID(),
                         app.getInternshipID(),
                         app.getStudentID(),
-                        app.getStatus().name()
+                        app.getStatus().name(),
+                        String.valueOf(app.isConfirmedByStudent())
                 );
                 writer.write(line);
                 writer.newLine();

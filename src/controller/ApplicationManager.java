@@ -9,7 +9,7 @@ import entity.InternshipApplication.ApplicationStatus;
 
 public class ApplicationManager {
     // Manages student's applications and internship placements
-
+    public final int MAX_APPS = 3;
     private final Map<String, InternshipApplication> allApplications;
     private final Map<String, Internship> allInternships;
     private final Map<String, Student> allStudents;
@@ -23,27 +23,25 @@ public class ApplicationManager {
     }
 
     // student submits an application for an internship
-    public boolean submitApplication(Student student, Internship internship) {
+    public String submitApplication(Student student, Internship internship) {
         for (String appID : student.getSubmittedApplicationIDs()) {
             InternshipApplication app = allApplications.get(appID);
             if(app != null && app.getInternshipID().equals(internship.getInternshipID())) {
-                System.out.println("You have already applied for this internship.");
-                return false;
+                return "You have already applied for this internship.";
             }
         }
 
         // Check if student reached max applications
-        if (student.getSubmittedApplicationIDs().size() > 2) {
-            System.out.println("Error: You have reached the maximum number of applications.");
-            return false;
+        if (student.getSubmittedApplicationIDs().size() >= MAX_APPS) {
+            return "Error: You have reached the maximum number of applications.";
         }
 
-        if (internship.getStatus() != InternshipStatus.APPROVED) { System.out.println("Error: This internship is not approved for applications."); return false; }
-        if (!internship.isVisible()) { System.out.println("Error: This internship is not currently visible.");return false; }
-        if (internship.getStatus() == InternshipStatus.FULL) { System.out.println("Error: This internship is already filled.");return false; }
+        if (internship.getStatus() != InternshipStatus.APPROVED) { return "Error: This internship is not approved for applications."; }
+        if (!internship.isVisible()) { return "Error: This internship is not currently visible."; }
+        if (internship.getStatus() == InternshipStatus.FULL) { return "Error: This internship is already filled."; }
 
         LocalDate today = LocalDate.now();
-        if (today.isAfter(internship.getApplicationCloseDate())) { System.out.println("Error: The application deadline for this internship has passed.");return false; }
+        if (today.isAfter(internship.getApplicationCloseDate())) { return "Error: The application deadline for this internship has passed."; }
 
         // eligibility.
         int year = student.getYear();
@@ -51,8 +49,7 @@ public class ApplicationManager {
 
         if ((year == 1 || year == 2) &&
             (level == InternshipLevel.INTERMEDIATE || level == InternshipLevel.ADVANCED)) {
-            System.out.println("Error: Year 1 and 2 students can only apply for BASIC level internships.");
-            return false;
+            return "Error: Year 1 and 2 students can only apply for BASIC level internships.";
         }
 
         // create application
@@ -66,8 +63,7 @@ public class ApplicationManager {
         student.addApplication(app.getApplicationID());
         internship.addApplication(app.getApplicationID());
 
-        System.out.println("Application for \"" + internship.getTitle() + "\" submitted successfully!");
-        return true;
+        return null;
     }
 
     public boolean acceptPlacement(String applicationID) {
@@ -135,10 +131,6 @@ public class ApplicationManager {
         InternshipApplication app = allApplications.get(applicationId);
         if (app == null) {
             System.out.println("Application not found.");
-            return false;
-        }
-        if (newStatus != ApplicationStatus.SUCCESSFUL && newStatus != ApplicationStatus.UNSUCCESSFUL) {
-            System.out.println("Error: Invalid action. Use acceptPlacement or requestWithdrawal.");
             return false;
         }
         if (app.getStatus() != ApplicationStatus.PENDING) {

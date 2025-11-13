@@ -82,7 +82,7 @@ public class InternshipManager {
         for(Internship i : internships.values()) {
             if(i.getStatus() == InternshipStatus.APPROVED) {
                 if(today.isAfter(i.getApplicationCloseDate())) {
-                    i.setStatus(InternshipStatus.REJECTED);
+                    i.setStatus(InternshipStatus.CLOSED);
                     // for debugging
                     // System.out.println("[InternshipManager] Internship '" + internship.getTitle() + "' has expired and is closed.");
                 }

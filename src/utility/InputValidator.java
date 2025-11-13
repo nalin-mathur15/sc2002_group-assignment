@@ -67,7 +67,4 @@ public final class InputValidator {
             return false;
         }
     }
-    public static boolean isNonEmptyString(String input) {
-        return input != null && !input.trim().isEmpty();
-    }
 }

@@ -2,6 +2,7 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 public class CompanyRepresentative extends User {
     private String company;
     private String department;
@@ -21,7 +22,8 @@ public class CompanyRepresentative extends User {
     public String getCompanyName() { return this.company; }
     public String getDepartment() { return this.department; }
     public String getPosition() { return this.position; }
-    public List<String> getPostedInternshipIDs() { return this.postedInternshipIDs; }
+    public List<String> getPostedInternshipIDs() { 
+        return Collections.unmodifiableList(this.postedInternshipIDs); }
     public boolean approvedRepresentative() { return this.staffApproved; }
 
     //setters

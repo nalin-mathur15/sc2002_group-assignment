@@ -10,7 +10,8 @@ public class Internship {
         PENDING,    //pending staff approval 
         APPROVED,   //approved (will be listed for students view now) 
         REJECTED,   //rejected by staff
-        FULL        // no more spaces left (will become hidden from student view)
+        FULL,       // no more spaces left (will become hidden from student view)
+        CLOSED      // past the deadline
     }
     public enum InternshipLevel {
         BASIC, INTERMEDIATE, ADVANCED
@@ -78,6 +79,13 @@ public class Internship {
     public void setNumberOfSlots(int numberOfSlots) { this.slots = (numberOfSlots > 10) ? 10 : numberOfSlots; }
     public void setStatus(InternshipStatus status) { this.status = status; }
     public void setVisibility(boolean hide) { this.visible = hide; }
+    public void setSlotsFilled(int slotsFilled) {
+        if (slotsFilled >= 0 && slotsFilled <= this.slots) {
+            this.filledSlots = slotsFilled;
+        } else {
+            this.filledSlots = 0;
+        }
+    }
 
     public void incrementSlotsFilled() {
         if (this.filledSlots < this.slots) {

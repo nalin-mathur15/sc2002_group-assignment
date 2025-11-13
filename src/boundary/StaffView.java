@@ -8,6 +8,7 @@ import entity.InternshipApplication.ApplicationStatus;
 import utility.InputService;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -165,12 +166,8 @@ public class StaffView extends AbstractView {
 
         int i = 1;
         for (InternshipApplication app : pendingWithdrawals) {
-            Student student = applicationManager.getAllStudents().stream()
-                .filter(s -> s.getUserID().equals(app.getStudentID()))
-                .findFirst().orElse(null);
-            Internship internship = internshipManager.getAllInternships().stream()
-                .filter(intern -> intern.getInternshipID().equals(app.getInternshipID()))
-                .findFirst().orElse(null);
+            Student student = applicationManager.getStudentbyID(app.getStudentID());
+            Internship internship = internshipManager.getInternshipById(app.getInternshipID());
 
             if (student != null && internship != null) {
                  System.out.printf("%-3d | %-15s | %-20s | %-25s\n",
@@ -212,6 +209,7 @@ public class StaffView extends AbstractView {
                     .filter(i -> internshipFilterMajor == null || i.getPreferredMajor().equalsIgnoreCase(internshipFilterMajor))
                     .filter(i -> internshipFilterCompany == null || i.getCompanyName().equalsIgnoreCase(internshipFilterCompany))
                     .filter(i -> internshipFilterLevel == null || i.getLevel() == internshipFilterLevel)
+                    .sorted(Comparator.comparing(i -> i.getTitle()))
                     .collect(Collectors.toList());
 
             System.out.println("\n--- Filter Internships ---");
@@ -411,28 +409,6 @@ public class StaffView extends AbstractView {
     // change pwd
     
     // helpers
-
-    private void displayInternships(Collection<Internship> internships) {
-        if (internships.isEmpty()) {
-            System.out.println("No internships found matching this filter.");
-            return;
-        }
-        int i = 1;
-        System.out.println("--------------------------------------------------------------------------------------------------");
-        System.out.printf("%-3s | %-25s | %-20s | %-12s | %-12s | %-10s\n", 
-            "#", "Title", "Company", "Status", "Level", "Major");
-        System.out.println("--------------------------------------------------------------------------------------------------");
-        for (Internship intern : internships) {
-            System.out.printf("%-3d | %-25s | %-20s | %-12s | %-12s | %-10s\n",
-                    i++,
-                    intern.getTitle(),
-                    intern.getCompanyName(),
-                    intern.getStatus(),
-                    intern.getLevel(),
-                    intern.getPreferredMajor());
-        }
-        System.out.println("--------------------------------------------------------------------------------------------------");
-    }
 
     private void displayStudents(Collection<Student> students) {
          if (students.isEmpty()) {
