@@ -93,12 +93,6 @@ public class MainMenu {
         String department = InputService.readString();
         System.out.print("Enter your Position: ");
         String position = InputService.readString();
-
-        if (!InputValidator.nonEmpty(name) || !InputValidator.nonEmpty(companyName) ||
-            !InputValidator.nonEmpty(department) || !InputValidator.nonEmpty(position)) {
-            System.out.println("Registration failed. All fields must be filled.");
-            return;
-        }
         
         CompanyRepresentative newRep = authManager.registerRepresentative(
             email, name, email, companyName, department, position
