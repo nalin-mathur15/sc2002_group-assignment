@@ -2,24 +2,22 @@ package boundary;
 
 import controller.*;
 import entity.*;
-import entity.Internship.InternshipLevel;
 import entity.Internship.InternshipStatus;
+import entity.Internship.InternshipLevel;
 import entity.InternshipApplication.ApplicationStatus;
 import utility.InputService;
-import entity.InternshipApplication.ApplicationStatus;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class StaffView implements ChangePasswordInt, LogoutInt {
-    // menu and options for staff after logging in
-	private String filterSetting; //maybe enum better
-	private final ApplicationManager applicationManager;
-	private final ApprovalManager approvalManager;
-	private final InternshipManager internshipManager;
-	private final AuthManager authManager;
-	
-    // filter fields
+public class StaffView extends AbstractView {
+
+    private final ApplicationManager applicationManager;
+    private final ApprovalManager approvalManager;
+    private final InternshipManager internshipManager;
+    private final Staff loggedInStaff;
+
     private InternshipStatus internshipFilterStatus = null;
     private String internshipFilterMajor = null;
     private String internshipFilterCompany = null;
@@ -30,307 +28,188 @@ public class StaffView implements ChangePasswordInt, LogoutInt {
     private String repFilterCompany = null;
     private ApplicationStatus appFilterStatus = null;
 
-    private Staff s;
-	
-	public StaffView(ApplicationManager applicationManager, ApprovalManager approvalManager,
-			AuthManager authManager, InternshipManager internshipManager, Staff st) {
-		this.applicationManager = applicationManager;
-		this.approvalManager = approvalManager;
-		this.internshipManager = internshipManager;
-		this.authManager = authManager;
-		this.s = st;
-	}
-	
-	public void Menu() {
-		int choice;
-		do {
-			System.out.println("\n ------ Staff Menu ------");
-			System.out.println("Currently logged in as: " + s.getName());
-			System.out.println("1: View Company Representative Account Requests");
-			System.out.println("2: View Internship Posting Requests");
-			System.out.println("3: View Student Withdrawal Requests");
-			System.out.println("4: View and Filter Internships");
-            System.out.println("5: View and Filter Students");
-            System.out.println("6: View and Filter Company Representatives");
-            System.out.println("7: View and Filter Internship Applications");
-            System.out.println("8: Change Password");
-			System.out.println("9: Logout");
-			System.out.println("Enter choice: ");
-			choice = InputService.readInt();
-			switch (choice) {
-			case 1 -> ViewAccountReqs();
-			case 2 -> ViewInternshipRequests();
-			case 3 -> ViewWithdrawalReqs();
-			case 4 -> viewAndFilterInternships();
-			case 5 -> viewAndFilterStudents();
-            case 6 -> viewAndFilterCompanyReps();
-            case 7 -> viewAndFilterApplications();
-            case 8 -> ChangePassword();
-			case 9 -> Logout();
-			default -> System.out.println("Invalid choice. Please try again. ");
-			}
-		} while (choice != 9);
-	}
-	
-	public void ViewAccountReqs() {
-		List<CompanyRepresentative> pendingReps = approvalManager.getPendingRepresentativeApprovals();
-		if (pendingReps.isEmpty()) {
-			System.out.println("No Accounts Pending For Approval.");
-			return;
-		}
-		else {
-			System.out.println("\n--- Pending Company Representative Accounts ---");
-			for (int i = 0; i < pendingReps.size(); i++) {
-            	CompanyRepresentative rep = pendingReps.get(i);
-            	System.out.printf("%d. %-15s | %-20s | %s\n",
-                    (i + 1), rep.getName(), rep.getCompanyName(), rep.getEmail());
-        	}
-        	System.out.println("-------------------------------------------------");
-			ApproveCompany(pendingReps);
-		}
-	}
 
-	public void ApproveCompany(List<CompanyRepresentative> pendingReps) {
-		System.out.println("Select a Company Representative to approve or reject. (1-" + pendingReps.size() + ")");
-		System.out.println("Enter '0' to go back to menu.");
-		int choice = InputService.readInt();
-		while (choice < 0 || choice > pendingReps.size()) {
-			System.out.println("Invalid input. Please retry. ");
-			choice = InputService.readInt();
-		}
-		
-		if (choice == 0) {
-			System.out.println("Back to menu ...");
-		} else {
-			CompanyRepresentative rep = pendingReps.get(choice-1);
-			String repID = rep.getUserID();
-			System.out.printf("%s (%s): \n1. Approve \n2. Reject", rep.getName(), rep.getCompanyName());
-			int action = InputService.readInt();
-			if (action == 1) {
-				approvalManager.approveRepresentative(repID, true);
-				System.out.printf("** Successfully approved %s! **", rep.getName());
-			}
-			else if (action == 2) {
-				approvalManager.approveRepresentative(repID, false);
-				System.out.printf("** Successfully rejected %s! **", rep.getName());
-			} else { System.out.println("Invalid action. Returning to menu..."); }	
-		}		
-	}
-
-	public void ViewInternshipRequests() {
-		List<Internship> pendingInternships = approvalManager.getPendingInternshipApprovals();
-		if (pendingInternships.isEmpty()) {
-			System.out.println("No Internships Pending For Approval.");
-			return;
-		} else {
-			System.out.println("\n--- Pending Internship Postings ---");
-        	for (int i = 0; i < pendingInternships.size(); i++) {
-            	Internship intern = pendingInternships.get(i);
-            	System.out.printf("%d. %-25s | %-15s | Rep: %s\n",
-                    (i + 1), intern.getTitle(), intern.getCompanyName(), intern.getCompanyRepID());
-        	}
-        	System.out.println("-------------------------------------------------");
-        	ApproveIntern(pendingInternships);
-		}
-	}
-
-	public void ApproveIntern(List<Internship> pendingInternships) {
-		System.out.println("Select an Internship to approve or reject (1-" + pendingInternships.size() + ")");
-		System.out.println("Enter '0' to go back to menu.");
-		int choice = InputService.readInt();
-		while (choice < 0 || choice > pendingInternships.size()) {
-			System.out.println("Invalid input. Please retry. ");
-			choice = InputService.readInt();
-		}
-		if (choice == 0) {
-			System.out.println("Back to menu ...");
-			return;
-		}
-		Internship intern = pendingInternships.get(choice-1);
-		String internID = intern.getInternshipID();
-		System.out.printf("%s: \n1. Approve \n2. Reject", intern.getTitle());
-		int action = InputService.readInt();
-		if (action == 1) {
-			approvalManager.approveInternship(internID, true);
-			System.out.printf("** Successfully approved %s! **", intern.getTitle());
-		} else if (action == 2) {
-			approvalManager.approveInternship(internID, false);
-			System.out.printf("** Successfully rejected %s! **", intern.getTitle());
-		} else { System.out.println("Invalid choice. Returning to menu..."); }
-	}
-
-<<<<<<< HEAD
-	public void ViewWithdrawalReqs() {
-		List<InternshipApplication> pendingWithdrawals = applicationManager.getPendingWithdrawals();
-		if (pendingWithdrawals.isEmpty()) {
-			System.out.println("No Withdrawal Requests To View.");
-			return;
-		} else {
-			System.out.println("\n--- Pending Withdrawal Requests ---");
-			for (int i = 0; i < pendingWithdrawals.size(); i++) {
-				InternshipApplication app = pendingWithdrawals.get(i);
-				Internship intern = internshipManager.getInternshipById(app.getInternshipID());
-				System.out.printf("%d. Student ID: %-10s | Internship: %-25s | Company: %-15s\n",
-					(i + 1), app.getStudentID(), intern.getTitle(), intern.getCompanyName());
-			}
-			System.out.println("-------------------------------------------------");
-		}
-		ApproveWithdrawal(pendingWithdrawals);
-	}
-
-	public void ApproveWithdrawal(List<InternshipApplication> pendingWithdrawals) {
-		System.out.println("Select a Withdrawal Request to approve or reject (1-" + pendingWithdrawals.size() + ")");
-		System.out.println("Enter '0' to go back to menu.");
-		int choice = InputService.readInt();
-		while (choice < 0 || choice > pendingWithdrawals.size()) {
-			System.out.println("Invalid input. Please retry. ");
-			choice = InputService.readInt();
-		}
-		if (choice == 0) {
-			System.out.println("Back to menu ...");
-			return;
-		}
-		InternshipApplication app = pendingWithdrawals.get(choice-1);
-		Internship intern = internshipManager.getInternshipById(app.getInternshipID());
-		System.out.printf("Withdrawal Request for StudentID (%s) on Internship (%s): \n0. Go back \n1. Approve \n2. Reject", app.getStudentID(), intern.getTitle());
-		int action = InputService.readInt();
-		while (choice < 0 || choice > 2) {
-			System.out.println("Invalid input. Please retry. ");
-			action = InputService.readInt();
-		}
-		if (action == 0) {
-			System.out.println("Back to menu ...");
-		}
-		else if (action == 1) {
-			applicationManager.updateApplicationStatus(app.getApplicationID(), ApplicationStatus.WITHDRAWN);
-			System.out.printf("** Successfully approved withdrawal for for StudentID (%s) on Internship (%s)! **", app.getStudentID(), intern.getTitle());
-		} else {
-			applicationManager.updateApplicationStatus(app.getApplicationID(), ApplicationStatus.SUCCESSFUL);
-			System.out.printf("** Successfully rejected withdrawal for for StudentID (%s) on Internship (%s)! **", app.getStudentID(), intern.getTitle());
-		}
-	}
-	
-	public void ViewExistingInternships() {
-		Collection<Internship> allInternships = internshipManager.getAllInternships();
-		if (allInternships.isEmpty()) {
-			System.out.println("No Internships To View.");
-			return;
-		} else {
-			System.out.println("\n--- All Internships ---");
-			for (Internship intern : allInternships) {
-				System.out.printf("%-25s | %-15s | Status: %s | Visible: %s\n",
-					intern.getTitle(), intern.getCompanyName(), intern.getStatus(), intern.isVisible());
-				// ChangeFilter();
-			}
-		}
-		// display according to filterSetting
-		// ask to apply different filter settings or back to staff view
-	}	
-	
-	public void ChangeFilter() {
-		System.out.println("Select a filter.");
-		System.out.println("Otherwise, enter '0' to go back to menu.");
-		System.out.println("1. Status \n2. Preferred Majors \n3. Internship Level");
-		int choice = InputService.readInt();
-		while (choice < 0 && choice > 3) {
-			System.out.println("Invalid input");
-			choice = InputService.readInt();
-		}
-		
-		if (choice == 0) {
-			System.out.println("Back to menu ...");
-		}
-		else {
-			// not sure how to compound filters together
-			
-		}
-	}
-=======
-	private void displayApplications(Collection<InternshipApplication> applications) {
-         if (applications.isEmpty()) {
-            System.out.println("No applications found matching this filter.");
-            return;
-        }
-        int i = 1;
-        System.out.println("-------------------------------------------------------------------");
-        System.out.printf("%-3s | %-15s | %-15s | %-15s\n", "#", "Application ID", "Student ID", "Status");
-        System.out.println("-------------------------------------------------------------------");
-        for (InternshipApplication a : applications) {
-            System.out.printf("%-3d | %-15s | %-15s | %-15s\n",
-                    i++,
-                    a.getApplicationID(),
-                    a.getStudentID(),
-                    a.getStatus());
-        }
-        System.out.println("-------------------------------------------------------------------");
+    public StaffView(ApplicationManager applicationManager, ApprovalManager approvalManager,
+                     AuthManager authManager, InternshipManager internshipManager, Staff staff) {
+        super(authManager, staff);
+        this.applicationManager = applicationManager;
+        this.approvalManager = approvalManager;
+        this.internshipManager = internshipManager;
+        this.loggedInStaff = staff;
     }
 
-	private void displayCompanyReps(Collection<CompanyRepresentative> reps) {
-         if (reps.isEmpty()) {
-            System.out.println("No representatives found matching this filter.");
-            return;
-        }
-        int i = 1;
-        System.out.println("--------------------------------------------------------------------------------------");
-        System.out.printf("%-3s | %-20s | %-20s | %-10s | %-25s\n", "#", "Name", "Company", "Status", "Email (ID)");
-        System.out.println("--------------------------------------------------------------------------------------");
-        for (CompanyRepresentative r : reps) {
-            System.out.printf("%-3d | %-20s | %-20s | %-10s | %-25s\n",
-                    i++,
-                    r.getName(),
-                    r.getCompanyName(),
-                    r.approvedRepresentative() ? "Approved" : "Pending",
-                    r.getEmail());
-        }
-        System.out.println("--------------------------------------------------------------------------------------");
-    }
-
-	private void displayStudents(Collection<Student> students) {
-         if (students.isEmpty()) {
-            System.out.println("No students found matching this filter.");
-            return;
-        }
-        int i = 1;
-        System.out.println("-------------------------------------------------------------------");
-        System.out.printf("%-3s | %-20s | %-10s | %-5s | %-25s\n", "#", "Name", "Major", "Year", "Email");
-        System.out.println("-------------------------------------------------------------------");
-        for (Student s : students) {
-            System.out.printf("%-3d | %-20s | %-10s | %-5d | %-25s\n",
-                    i++,
-                    s.getName(),
-                    s.getMajor(),
-                    s.getYear(),
-                    s.getEmail());
-        }
-        System.out.println("-------------------------------------------------------------------");
-    }
-
-	private void displayInternships(Collection<Internship> internships) {
-        if (internships.isEmpty()) {
-            System.out.println("No internships found matching this filter.");
-            return;
-        }
-        int i = 1;
-        System.out.println("--------------------------------------------------------------------------------------------------");
-        System.out.printf("%-3s | %-25s | %-20s | %-12s | %-12s | %-10s\n", 
-            "#", "Title", "Company", "Status", "Level", "Major");
-        System.out.println("--------------------------------------------------------------------------------------------------");
-        for (Internship intern : internships) {
-            System.out.printf("%-3d | %-25s | %-20s | %-12s | %-12s | %-10s\n",
-                    i++,
-                    intern.getTitle(),
-                    intern.getCompanyName(),
-                    intern.getStatus(),
-                    intern.getLevel(),
-                    intern.getPreferredMajor());
-        }
-        System.out.println("--------------------------------------------------------------------------------------------------");
-    }
-
-	private void viewAndFilterInternships() {
+    /**
+     * Displays the main menu for Staff.
+     * This method loops until the user chooses to logout.
+     */
+    @Override
+    public void Menu() {
         int choice;
         do {
-            // current filters
+            System.out.println("\n--- Staff Menu ---");
+            System.out.println("Logged in as: " + loggedInStaff.getName());
+            System.out.println("1. View Company Representative Account Requests");
+            System.out.println("2. View Internship Posting Requests");
+            System.out.println("3. View Student Withdrawal Requests");
+            System.out.println("4. View & Filter All Internships");
+            System.out.println("5. View & Filter All Students");
+            System.out.println("6. View & Filter All Company Representatives");
+            System.out.println("7. View & Filter All Applications");
+            System.out.println("8. Change Password");
+            System.out.println("9. Logout");
+            System.out.print("Enter choice: ");
+
+            choice = InputService.readInt();
+
+            switch (choice) {
+                case 1 -> viewAccountRequests();
+                case 2 -> viewInternshipRequests();
+                case 3 -> viewWithdrawalRequests();
+                case 4 -> viewAndFilterInternships();
+                case 5 -> viewAndFilterStudents();
+                case 6 -> viewAndFilterCompanyReps();
+                case 7 -> viewAndFilterApplications();
+                case 8 -> changePassword();
+                case 9 -> System.out.println("Logging out...");
+                default -> System.out.println("Invalid choice. Please try again.");
+            }
+        } while (choice != 9);
+    }
+
+    // account requests
+
+    private void viewAccountRequests() {
+        List<CompanyRepresentative> pendingReps = approvalManager.getPendingRepresentativeApprovals();
+        if (pendingReps.isEmpty()) {
+            System.out.println("\nNo company representative accounts are pending approval.");
+            return;
+        }
+        System.out.println("\n--- Pending Company Representative Accounts ---");
+        displayCompanyReps(pendingReps);
+        approveCompany(pendingReps);
+    }
+
+    private void approveCompany(List<CompanyRepresentative> pendingReps) {
+        System.out.println("\nSelect a representative to approve/reject (1-" + pendingReps.size() + ").");
+        System.out.println("Enter '0' to go back.");
+        int choice = InputService.readIntRange(0, pendingReps.size());
+
+        if (choice == 0) return;
+
+        CompanyRepresentative rep = pendingReps.get(choice - 1);
+        System.out.printf("Action for %s (%s): 1. Approve, 2. Reject, 0. Cancel\n", rep.getName(), rep.getCompanyName());
+        int action = InputService.readIntRange(0, 2);
+
+        switch (action) {
+            case 1 -> {
+                approvalManager.approveRepresentative(rep.getUserID(), true);
+                System.out.printf("** Successfully approved %s! **\n", rep.getName());
+            }
+            case 2 -> {
+                approvalManager.approveRepresentative(rep.getUserID(), false);
+                System.out.printf("** Successfully rejected %s! **\n", rep.getName());
+            }
+            default -> System.out.println("Action cancelled.");
+        }
+    }
+
+
+    // internship requests
+
+    private void viewInternshipRequests() {
+        List<Internship> pendingInternships = approvalManager.getPendingInternshipApprovals();
+        if (pendingInternships.isEmpty()) {
+            System.out.println("\nNo internships are pending approval.");
+            return;
+        }
+        System.out.println("\n--- Pending Internship Postings ---");
+        displayInternships(pendingInternships);
+        approveInternship(pendingInternships);
+    }
+    
+    private void approveInternship(List<Internship> pendingInternships) {
+         System.out.println("\nSelect an internship to approve/reject (1-" + pendingInternships.size() + ").");
+        System.out.println("Enter '0' to go back.");
+        int choice = InputService.readIntRange(0, pendingInternships.size());
+
+        if (choice == 0) return;
+
+        Internship intern = pendingInternships.get(choice - 1);
+        System.out.printf("Action for %s: 1. Approve, 2. Reject, 0. Cancel\n", intern.getTitle());
+        int action = InputService.readIntRange(0, 2);
+        
+        switch (action) {
+            case 1 -> {
+                approvalManager.approveInternship(intern.getInternshipID(), true);
+                System.out.printf("** Successfully approved %s! **\n", intern.getTitle());
+            }
+            case 2 -> {
+                approvalManager.approveInternship(intern.getInternshipID(), false);
+                System.out.printf("** Successfully rejected %s! **\n", intern.getTitle());
+            }
+            default -> System.out.println("Action cancelled.");
+        }
+    }
+
+    // withdrawal requests
+
+    private void viewWithdrawalRequests() {
+        System.out.println("\n--- Student Withdrawal Requests ---");
+        
+        List<InternshipApplication> pendingWithdrawals = applicationManager.getPendingWithdrawals();
+
+        if (pendingWithdrawals.isEmpty()) {
+            System.out.println("There are no pending withdrawal requests.");
+            return;
+        }
+
+        System.out.println("---------------------------------------------------------------------------------");
+        System.out.printf("%-3s | %-15s | %-20s | %-25s\n", "#", "App ID", "Student Name", "Internship Title");
+        System.out.println("---------------------------------------------------------------------------------");
+
+        int i = 1;
+        for (InternshipApplication app : pendingWithdrawals) {
+            Student student = applicationManager.getAllStudents().stream()
+                .filter(s -> s.getUserID().equals(app.getStudentID()))
+                .findFirst().orElse(null);
+            Internship internship = internshipManager.getAllInternships().stream()
+                .filter(intern -> intern.getInternshipID().equals(app.getInternshipID()))
+                .findFirst().orElse(null);
+
+            if (student != null && internship != null) {
+                 System.out.printf("%-3d | %-15s | %-20s | %-25s\n",
+                    i++,
+                    app.getApplicationID(),
+                    student.getName(),
+                    internship.getTitle()
+                );
+            }
+        }
+        System.out.println("---------------------------------------------------------------------------------");
+
+        System.out.println("Select a request to process (1-" + pendingWithdrawals.size() + ").");
+        System.out.println("Enter '0' to go back.");
+        int choice = InputService.readIntRange(0, pendingWithdrawals.size());
+
+        if (choice == 0) return;
+
+        InternshipApplication selectedApp = pendingWithdrawals.get(choice - 1);
+
+        System.out.printf("Action for %s: 1. Approve Withdrawal, 2. Reject Withdrawal, 0. Cancel\n", selectedApp.getApplicationID());
+        int action = InputService.readIntRange(0, 2);
+
+        switch (action) {
+            case 1 -> applicationManager.approveWithdrawalRequest(selectedApp.getApplicationID(), true);
+            case 2 -> applicationManager.approveWithdrawalRequest(selectedApp.getApplicationID(), false);
+            default -> System.out.println("Action cancelled.");
+        }
+    }
+
+    // filter internships
+
+    private void viewAndFilterInternships() {
+        int choice;
+        do {
             Collection<Internship> allInternships = internshipManager.getAllInternships();
             Collection<Internship> filteredList = allInternships.stream()
                     .filter(i -> internshipFilterStatus == null || i.getStatus() == internshipFilterStatus)
@@ -339,7 +218,6 @@ public class StaffView implements ChangePasswordInt, LogoutInt {
                     .filter(i -> internshipFilterLevel == null || i.getLevel() == internshipFilterLevel)
                     .collect(Collectors.toList());
 
-            // current state
             System.out.println("\n--- Filter Internships ---");
             System.out.println("Current Filters:");
             System.out.println("  Status:  " + (internshipFilterStatus == null ? "Any" : internshipFilterStatus));
@@ -350,7 +228,6 @@ public class StaffView implements ChangePasswordInt, LogoutInt {
             System.out.println("\n--- Internship Results (" + filteredList.size() + " found) ---");
             displayInternships(filteredList);
 
-            // menu to change filters
             System.out.println("\n--- Set/Change Filter ---");
             System.out.println("1. Set Status");
             System.out.println("2. Set Preferred Major");
@@ -361,7 +238,6 @@ public class StaffView implements ChangePasswordInt, LogoutInt {
             System.out.print("Enter choice: ");
             choice = InputService.readIntRange(0, 5);
 
-            // update state
             try {
                 switch (choice) {
                     case 1 -> {
@@ -397,6 +273,8 @@ public class StaffView implements ChangePasswordInt, LogoutInt {
             }
         } while (choice != 0);
     }
+
+    // filter students
 
     private void viewAndFilterStudents() {
         int choice;
@@ -443,10 +321,12 @@ public class StaffView implements ChangePasswordInt, LogoutInt {
         } while (choice != 0);
     }
 
+    // filter company reps
+
     private void viewAndFilterCompanyReps() {
         int choice;
         do {
-            Collection<CompanyRepresentative> allReps = approvalManager.getAllRepresentatives(); // Assumes this exists
+            Collection<CompanyRepresentative> allReps = approvalManager.getAllRepresentatives();
             Collection<CompanyRepresentative> filteredList = allReps.stream()
                 .filter(r -> repFilterApproved == null || r.approvedRepresentative() == repFilterApproved)
                 .filter(r -> repFilterCompany == null || r.getCompanyName().equalsIgnoreCase(repFilterCompany))
@@ -489,13 +369,16 @@ public class StaffView implements ChangePasswordInt, LogoutInt {
         } while (choice != 0);
     }
 
+    // filter applications
+
     private void viewAndFilterApplications() {
         int choice;
         do {
-            Collection<InternshipApplication> allApps = applicationManager.getAllApplications(); // Assumes this exists
+            Collection<InternshipApplication> allApps = applicationManager.getAllApplications();
             Collection<InternshipApplication> filteredList = allApps.stream()
                 .filter(a -> appFilterStatus == null || a.getStatus() == appFilterStatus)
                 .collect(Collectors.toList());
+
             System.out.println("\n--- Filter Applications ---");
             System.out.println("Current Filters:");
             System.out.println("  Status: " + (appFilterStatus == null ? "Any" : appFilterStatus));
@@ -527,25 +410,90 @@ public class StaffView implements ChangePasswordInt, LogoutInt {
             }
         } while (choice != 0);
     }
->>>>>>> origin/main
-	
-	public void ChangePassword() {
-        System.out.println("\n--- Change Password ---");
-        System.out.print("Please enter your old password: ");
-        String old = InputService.readString();
-        System.out.print("Please enter your new password: ");
-        String newp = InputService.readString();        
-        boolean success = authManager.changePassword(s, old, newp);
-        
-        if (success) {
-            System.out.println("Password changed successfully!");
-        } else {
-            System.out.println("Failed to change password. Old password may be incorrect.");
+    
+    
+    // change pwd
+    
+    // helpers
+
+    private void displayInternships(Collection<Internship> internships) {
+        if (internships.isEmpty()) {
+            System.out.println("No internships found matching this filter.");
+            return;
         }
+        int i = 1;
+        System.out.println("--------------------------------------------------------------------------------------------------");
+        System.out.printf("%-3s | %-25s | %-20s | %-12s | %-12s | %-10s\n", 
+            "#", "Title", "Company", "Status", "Level", "Major");
+        System.out.println("--------------------------------------------------------------------------------------------------");
+        for (Internship intern : internships) {
+            System.out.printf("%-3d | %-25s | %-20s | %-12s | %-12s | %-10s\n",
+                    i++,
+                    intern.getTitle(),
+                    intern.getCompanyName(),
+                    intern.getStatus(),
+                    intern.getLevel(),
+                    intern.getPreferredMajor());
+        }
+        System.out.println("--------------------------------------------------------------------------------------------------");
     }
 
-	public void Logout() {
-        System.out.println("Logging out ...");
-		authManager.logout(s);
-	}	
+    private void displayStudents(Collection<Student> students) {
+         if (students.isEmpty()) {
+            System.out.println("No students found matching this filter.");
+            return;
+        }
+        int i = 1;
+        System.out.println("-------------------------------------------------------------------");
+        System.out.printf("%-3s | %-20s | %-10s | %-5s | %-25s\n", "#", "Name", "Major", "Year", "Email");
+        System.out.println("-------------------------------------------------------------------");
+        for (Student s : students) {
+            System.out.printf("%-3d | %-20s | %-10s | %-5d | %-25s\n",
+                    i++,
+                    s.getName(),
+                    s.getMajor(),
+                    s.getYear(),
+                    s.getEmail());
+        }
+        System.out.println("-------------------------------------------------------------------");
+    }
+
+    private void displayCompanyReps(Collection<CompanyRepresentative> reps) {
+         if (reps.isEmpty()) {
+            System.out.println("No representatives found matching this filter.");
+            return;
+        }
+        int i = 1;
+        System.out.println("--------------------------------------------------------------------------------------");
+        System.out.printf("%-3s | %-20s | %-20s | %-10s | %-25s\n", "#", "Name", "Company", "Status", "Email (ID)");
+        System.out.println("--------------------------------------------------------------------------------------");
+        for (CompanyRepresentative r : reps) {
+            System.out.printf("%-3d | %-20s | %-20s | %-10s | %-25s\n",
+                    i++,
+                    r.getName(),
+                    r.getCompanyName(),
+                    r.approvedRepresentative() ? "Approved" : "Pending",
+                    r.getEmail());
+        }
+        System.out.println("--------------------------------------------------------------------------------------");
+    }
+
+    private void displayApplications(Collection<InternshipApplication> applications) {
+         if (applications.isEmpty()) {
+            System.out.println("No applications found matching this filter.");
+            return;
+        }
+        int i = 1;
+        System.out.println("-------------------------------------------------------------------");
+        System.out.printf("%-3s | %-15s | %-15s | %-15s\n", "#", "Application ID", "Student ID", "Status");
+        System.out.println("-------------------------------------------------------------------");
+        for (InternshipApplication a : applications) {
+            System.out.printf("%-3d | %-15s | %-15s | %-15s\n",
+                    i++,
+                    a.getApplicationID(),
+                    a.getStudentID(),
+                    a.getStatus());
+        }
+        System.out.println("-------------------------------------------------------------------");
+    }
 }

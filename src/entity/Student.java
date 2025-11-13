@@ -22,7 +22,6 @@ public class Student extends User {
     public List<String> getSubmittedApplicationIDs() { return submittedApplicationIDs; }
     public String getAcceptedInternshipID() { return acceptedInternship; }
     public boolean hasAcceptedInternship() { return this.acceptedInternship != null; }
-    public String getStudentID() { return this.getUserID(); }
     //setters
     public void setYear(int y) { this.year = y; }
     public void setMajor(String m) { this.major = m; }

@@ -6,33 +6,29 @@ import entity.*;
 import entity.Internship.InternshipLevel;
 import entity.Internship.InternshipStatus;
 import java.time.LocalDate;
+
 public class InternshipManager {
     // Manages listing of internships, creating, approving, and status of internship
-
     private Map<String, Internship> internships;
-    private static int InternshipIDGen = 1;
-
+    
     public InternshipManager(Map<String, Internship> internships) {
         this.internships = internships;
     }
 
-    // Add internship (by company rep)
-    public void addInternship(Internship internship) {
-        internships.put(internship.getInternshipID(), internship);
-        System.out.println("Internship \"" + internship.getTitle() + "\" added successfully.");
+    public void createInternship(String title, String description, InternshipLevel level, String major,
+                                 LocalDate openDate, LocalDate closeDate, CompanyRepresentative rep, int slots)  {
+        
+        String internID = "INT-" + UUID.randomUUID().toString().substring(0, 8);
+        Internship newIntern = new Internship(
+            internID, title, description, level, major,
+            openDate, closeDate, rep.getCompanyName(), rep.getUserID(), slots
+        );
+        internships.put(internID, newIntern);
+        rep.addInternship(internID);
+        System.out.println("Internship \"" + newIntern.getTitle() + "\" added successfully. Pending Staff approval.");
+    
     }
 
-    // Approve internship (career staff)
-    public boolean approveInternship(String internshipId) {
-        Internship i = internships.get(internshipId);
-        if (i != null && i.getStatus() == InternshipStatus.PENDING) {
-            i.setStatus(InternshipStatus.APPROVED);
-            System.out.println("Internship \"" + i.getTitle() + "\" approved.");
-            return true;
-        }
-        System.out.println("Internship not found or already processed.");
-        return false;
-    }
 
     // Toggle visibility (company rep)
     public boolean toggleVisibility(String internshipId, boolean visible) {
@@ -48,6 +44,7 @@ public class InternshipManager {
     // List internships available to a student
     public List<Internship> getInternshipsForStudent(Student s) {
         return internships.values().stream()
+                .filter(i -> i.getStatus() == InternshipStatus.APPROVED)
                 .filter(i -> i.isVisible())
                 .filter(i -> i.getPreferredMajor().equalsIgnoreCase(s.getMajor()))
                 .filter(i -> s.getYear() >= 3 || i.getLevel() == InternshipLevel.BASIC)
@@ -91,10 +88,5 @@ public class InternshipManager {
                 }
             }
         }
-    }
-    public static int UseInternIDGen() {
-    	int old = InternshipIDGen;
-    	InternshipIDGen += 1;
-    	return old;
     }
 }

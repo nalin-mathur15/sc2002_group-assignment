@@ -11,20 +11,20 @@ import entity.InternshipApplication.ApplicationStatus;
 
 import java.util.List;
 
-public class StudentView implements ChangePasswordInt, LogoutInt {
+public class StudentView extends AbstractView {
     // menu and options for a student user after logging in
 	private ApplicationManager applicationManager;
 	private InternshipManager internshipManager;
-	private AuthManager authManager;
 	private Student s;
 	public StudentView(ApplicationManager applicationManager, AuthManager authManager,
 			InternshipManager internshipManager, Student s) {
+		super(authManager, s);
 		this.applicationManager = applicationManager;
 		this.internshipManager = internshipManager;
-		this.authManager = authManager;
 		this.s = s;
 	}
 	
+	@Override
 	public void Menu() {
 		int choice;
 		do {
@@ -39,14 +39,14 @@ public class StudentView implements ChangePasswordInt, LogoutInt {
 			switch (choice) {
 				case 1 -> ViewInternship();
 				case 2 -> ViewApplications();
-				case 3 -> ChangePassword();
-				case 4 -> Logout();
+				case 3 -> changePassword();
+				case 4 -> System.out.println("Logging out...");
 				default -> System.out.println("Invalid choice. Please try again. ");
 				}
-		} while (choice != 3);
+		} while (choice != 4);
 	}
 	
-	public void ViewInternship() {
+	private void ViewInternship() {
 		List<Internship> listInternship = internshipManager.getInternshipsForStudent(s);
 		if (listInternship.isEmpty()) {
 			System.out.println("No internships available to view.");
@@ -64,7 +64,7 @@ public class StudentView implements ChangePasswordInt, LogoutInt {
 		}
 	}
 	
-	public void ApplyInternship(List<Internship> listInternship) {
+	private void ApplyInternship(List<Internship> listInternship) {
 		System.out.println("Select an Internship to apply for.");
 		System.out.println("Otherwise, enter '0' to go back to menu.");
 		System.out.printf("** Reminder that you can only apply for a maximum of 3 Internships. Current: %d **\n", s.getSubmittedApplicationIDs().size());
@@ -92,8 +92,8 @@ public class StudentView implements ChangePasswordInt, LogoutInt {
 		}
 	}
 
-	public void ViewApplications() {
-		List<InternshipApplication> listApplications = applicationManager.getApplicationsByStudent(s.getStudentID());
+	private void ViewApplications() {
+		List<InternshipApplication> listApplications = applicationManager.getApplicationsByStudent(s.getUserID());
 		if (listApplications.isEmpty()) {
 			System.out.println("No applications to view.");
 		}
@@ -110,11 +110,11 @@ public class StudentView implements ChangePasswordInt, LogoutInt {
 		}
 	}
 
-	public void ApplicationActions(List<InternshipApplication> listApplications) {
+	private void ApplicationActions(List<InternshipApplication> listApplications) {
 		System.out.println("Select an Application to accept or withdraw.");
 		System.out.println("Otherwise, enter '0' to go back to menu.");
 		int choice = InputService.readInt();
-		while (choice < 0 || choice > applicationManager.getApplicationsByStudent(s.getStudentID()).size()) {
+		while (choice < 0 || choice > applicationManager.getApplicationsByStudent(s.getUserID()).size()) {
 			System.out.println("Invalid input");
 			choice = InputService.readInt();
 		}
@@ -144,17 +144,5 @@ public class StudentView implements ChangePasswordInt, LogoutInt {
 			}
 			else { System.out.println("Returning to menu ..."); }
 		}
-	}
-	
-	public void ChangePassword() {
-		System.out.println("Please enter old password: ");
-		String oldPword = InputService.readString();
-		System.out.println("Please enter new password: ");
-		String newPword = InputService.readString();
-		authManager.changePassword(s, oldPword, newPword);
-	}
-
-	public void Logout() {
-		authManager.logout(s);
 	}
 }

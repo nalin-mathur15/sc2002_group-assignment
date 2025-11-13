@@ -46,7 +46,7 @@ public class Internship {
         this.companyRepresentativeID = companyRepID;
         this.slots = (numberOfSlots > 10) ? 10 : numberOfSlots;
         this.status = InternshipStatus.PENDING;
-        this.visible = true;
+        this.visible = false;
         this.filledSlots = 0;
         this.applicationIDs = new ArrayList<>();
     }
@@ -78,17 +78,19 @@ public class Internship {
     public void setNumberOfSlots(int numberOfSlots) { this.slots = (numberOfSlots > 10) ? 10 : numberOfSlots; }
     public void setStatus(InternshipStatus status) { this.status = status; }
     public void setVisibility(boolean hide) { this.visible = hide; }
-    public void fillOneSlot() {
+
+    public void incrementSlotsFilled() {
         if (this.filledSlots < this.slots) {
             this.filledSlots++;
         }
-        // Controller should check if (slotsFilled == numberOfSlots) and set status to FILLED.
     }
-    public void clearOneSlot() {
+
+    public void decrementSlotsFilled() {
         if (this.filledSlots > 0) {
             this.filledSlots--;
         }
     }
+    
     public void addApplication(String applicationID) {
         if (!this.applicationIDs.contains(applicationID)) {
             this.applicationIDs.add(applicationID);

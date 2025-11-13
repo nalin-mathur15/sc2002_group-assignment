@@ -1,63 +1,57 @@
 package controller;
 
 import java.util.*;
+
+import entity.CompanyRepresentative;
 import entity.User;
 
 public class AuthManager {
     // authenticate log in and password change
 
-    private Map<String, User> users;
-    private Set<String> loggedInUsers;
+    private Map<String, User> allUsers;
+    private Map<String, CompanyRepresentative> allCompanyReps;
 
-    public AuthManager(Map<String, User> users) {
-        this.users = users;
-        loggedInUsers = new HashSet<>();
+    public AuthManager(Map<String, User> users, Map<String, CompanyRepresentative> reps) {
+        this.allUsers = users;
+        this.allCompanyReps = reps;
     }
 
-    // Add user (used during initialization)
-    public void addUser(User user) {
-        users.put(user.getUserID(), user);
+    public boolean userExists(String userID) {
+        return allUsers.containsKey(userID);
     }
 
-    // Retrieve a user
-    public User getUser(String userId) {
-        return users.get(userId);
-    }
-
-    // Login authentication
-    public boolean login(String userId, String password) {
-        User user = users.get(userId);
-        if (user != null && user.getPassword().equals(password)) {
-            loggedInUsers.add(userId);
-            System.out.println("Login successful. Welcome, " + user.getName() + "!");
-            return true;
+    public User login(String userID, String password) {
+        User user = allUsers.get(userID);
+        if (user == null) {
+            return null;
         }
-        System.out.println("Invalid user ID or password.\n");
-        return false;
-    }
-
-    // Logout
-    public void logout(User user) {
-        if (user != null) {
-            loggedInUsers.remove(user.getUserID());
-            System.out.println("You have been logged out.");
+        if (user.getPassword().equals(password)) {
+            return user;
         }
+        return null;
     }
 
     // Change password
     public boolean changePassword(User user, String oldPassword, String newPassword) {
+        if (user == null) { return false; }
         if (user.getPassword().equals(oldPassword)) {
             user.setPassword(newPassword);
-            System.out.println("Password changed successfully!");
             return true;
         } else {
-            System.out.println("Incorrect old password.");
             return false;
         }
     }
 
-    // Check if logged in
-    public boolean isLoggedIn(String userId) {
-        return loggedInUsers.contains(userId);
+    public CompanyRepresentative registerRepresentative(String userID, String name, String email, String companyName, String department, String position) {
+        if (userExists(userID)) {
+            return null;
+        }
+
+        CompanyRepresentative newRep = new CompanyRepresentative( 
+            userID, name, email, "password", companyName, department, position
+        );
+        allUsers.put(userID, newRep);
+        allCompanyReps.put(userID, newRep);
+        return newRep;
     }
 }

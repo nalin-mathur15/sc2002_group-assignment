@@ -297,13 +297,6 @@ public final class DataHandler {
         return internships;
     }
 
-    /**
-     * Saves Internships to a text file.
-     * Format: internshipID,title,description,level,preferredMajor,openDate,closeDate,status,companyName,repID,slotsTotal,slotsFilled,isVisible
-     *
-     * @param path    The path to the internship data file.
-     * @param internships The Map of Internships to save.
-     */
     public static void saveInternships(String path, Map<String, Internship> internships) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             writer.write("internshipID,title,description,level,preferredMajor,openDate,closeDate,status,companyName,repID,slotsTotal,slotsFilled,isVisible");
@@ -334,15 +327,7 @@ public final class DataHandler {
         System.out.println("[DataHandler] Saved " + internships.size() + " internships to " + path);
     }
 
-    // --- Internship Application Data ---
-
-    /**
-     * Loads InternshipApplications from a text file.
-     * Format: applicationID,internshipID,studentID,status
-     *
-     * @param path The path to the application data file.
-     * @return A Map of InternshipApplications, keyed by applicationID.
-     */
+    
     public static Map<String, InternshipApplication> loadApplications(String path) {
         Map<String, InternshipApplication> applications = new HashMap<>();
         if (!Files.exists(Paths.get(path))) {
@@ -376,13 +361,6 @@ public final class DataHandler {
         return applications;
     }
 
-    /**
-     * Saves InternshipApplications to a text file.
-     * Format: applicationID,internshipID,studentID,status
-     *
-     * @param path     The path to the application data file.
-     * @param applications The Map of InternshipApplications to save.
-     */
     public static void saveApplications(String path, Map<String, InternshipApplication> applications) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
             writer.write("applicationID,internshipID,studentID,status");
