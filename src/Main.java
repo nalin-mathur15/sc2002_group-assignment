@@ -16,15 +16,15 @@ import java.util.HashMap;
  */
 public class Main {
 	/** File path for the student data CSV. */
-	private static final String STUDENT_FILE = "internship_management\\src\\data\\students.csv";
+	private static final String STUDENT_FILE = "src\\data\\students.csv";
 	/** File path for the staff data CSV. */
-	private static final String STAFF_FILE = "internship_management\\src\\data\\staff.csv";
+	private static final String STAFF_FILE = "src\\data\\staff.csv";
 	/** File path for the company representative data CSV. */
-	private static final String REP_FILE = "internship_management\\src\\data\\companyReps.csv";
+	private static final String REP_FILE = "src\\data\\companyReps.csv";
 	/** File path for the internship data CSV. */
-	private static final String INTERNSHIP_FILE = "internship_management\\src\\data\\internships.csv";
+	private static final String INTERNSHIP_FILE = "src\\data\\internships.csv";
 	/** File path for the application data CSV. */
-	private static final String APPLICATION_FILE = "internship_management\\src\\data\\applications.csv";
+	private static final String APPLICATION_FILE = "src\\data\\applications.csv";
 
 	/**
      * The main method to run the application.
