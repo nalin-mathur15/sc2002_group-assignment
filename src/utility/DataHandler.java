@@ -38,23 +38,14 @@ public final class DataHandler {
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
             reader.readLine();
-
             while ((line = reader.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
-                String[] data = line.split(DELIMITER);
+                String[] data = line.split(DELIMITER, -1); 
                 Student student = null;
 
                 try {
-                    if (data.length == 5) {
-                        // uninitialised student: StudentID, Name, Major, Year, Email
-                        String userID = data[0];
-                        String name = data[1];
-                        String major = data[2];
-                        int year = Integer.parseInt(data[3]);
-                        String email = data[4];
-                        student = new Student(userID, name, email, "password", year, major);
-                    } else if (data.length >= 6) {
-                        // Saved format: userID,name,password,email,major,yearOfStudy,applicationIDs
+                    if (data.length == 8) {
+                        // Header: userID,name,password,email,major,yearOfStudy,applicationIDs,acceptedInternshipID
                         String userID = data[0];
                         String name = data[1];
                         String password = data[2];
@@ -63,18 +54,33 @@ public final class DataHandler {
                         int year = Integer.parseInt(data[5]);
                         student = new Student(userID, name, email, password, year, major);
 
-                        if (data.length == 7 && !data[6].trim().isEmpty()) {
+                        if (!data[6].trim().isEmpty()) {
                             String[] appIDs = data[6].split(LIST_DELIMITER);
                             for (String appID : appIDs) {
                                 student.addApplication(appID);
                             }
                         }
+
+                        // acceptedInternshipID is at index 7
+                        String acceptedID = data[7];
+                        if (acceptedID != null && !acceptedID.equalsIgnoreCase("null") && !acceptedID.isEmpty()) {
+                            student.setAcceptedPlacement(acceptedID);
+                        }
+                        
+                    } else if (data.length == 5) {
+                        String userID = data[0];
+                        String name = data[1];
+                        String major = data[2];
+                        int year = Integer.parseInt(data[3]);
+                        String email = data[4];
+                        student = new Student(userID, name, email, "password", year, major);
                     }
+
 
                     if (student != null) {
                         students.put(student.getUserID(), student);
                     } else {
-                        System.err.println("[DataHandler] Skipping malformed student line: " + line);
+                        System.err.println("[DataHandler] Skipping malformed student line (unexpected column count: " + data.length + "): " + line);
                     }
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                     System.err.println("[DataHandler] Error parsing student line: " + line + " | Error: " + e.getMessage());
@@ -93,10 +99,17 @@ public final class DataHandler {
     */
     public static void saveStudents(String path, Map<String, Student> students) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-            writer.write("userID,name,password,email,major,yearOfStudy,applicationIDs");
+            writer.write("userID,name,password,email,major,yearOfStudy,applicationIDs,acceptedInternshipID");
             writer.newLine();
+            
             for (Student student : students.values()) {
                 String appIDs = String.join(LIST_DELIMITER, student.getSubmittedApplicationIDs());
+                
+                String acceptedID = student.getAcceptedInternshipID();
+                if (acceptedID == null) {
+                    acceptedID = "";
+                }
+                
                 String line = String.join(DELIMITER,
                         student.getUserID(),
                         student.getName(),
@@ -104,7 +117,8 @@ public final class DataHandler {
                         student.getEmail(),
                         student.getMajor(),
                         String.valueOf(student.getYear()),
-                        appIDs
+                        appIDs,
+                        acceptedID
                 );
                 writer.write(line);
                 writer.newLine();

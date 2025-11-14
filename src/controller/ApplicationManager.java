@@ -67,7 +67,8 @@ public class ApplicationManager {
             (level == InternshipLevel.INTERMEDIATE || level == InternshipLevel.ADVANCED)) {
             return "Error: Year 1 and 2 students can only apply for BASIC level internships.";
         }
-
+        //check is already placed
+        if(student.hasAcceptedInternship()) { return "Error: You have already accepted a placement."; }
         // create application
         String applicationID = "APP_" + UUID.randomUUID().toString().substring(0, 8);
         InternshipApplication app = new InternshipApplication(
@@ -116,6 +117,7 @@ public class ApplicationManager {
 
         app.studentConfirmation(true);
         i.incrementSlotsFilled();
+        s.setAcceptedPlacement(applicationID);
         if (i.getSlotsFilled() == i.getNumberOfSlots()) {
             i.setStatus(InternshipStatus.FULL);
         }
