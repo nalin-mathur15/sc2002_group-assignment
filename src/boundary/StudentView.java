@@ -70,7 +70,10 @@ public class StudentView extends AbstractView {
             choice = InputService.readIntRange(1, 5);
 
             switch (choice) {
-                case 1 -> viewAndFilterInternships();
+                case 1 -> {
+                    if(loggedInStudent.hasAcceptedInternship()) {
+                        System.out.println("You have already accepted a placement. You may not apply for more internships");
+                    } else {viewAndFilterInternships();}}
                 case 2 -> viewMyApplications();
                 case 3 -> handleWithdrawalRequest();
                 case 4 -> changePassword();
@@ -177,6 +180,7 @@ public class StudentView extends AbstractView {
         if (confirm == 1) {
             String error = applicationManager.submitApplication(loggedInStudent, selectedInternship);
             if (error != null) {
+                System.out.println(error);
                 System.out.println("Application failed. Please check the error message above.");
             } else {
 				System.out.println("Application for \"" + selectedInternship.getTitle() + "\" submitted successfully!");

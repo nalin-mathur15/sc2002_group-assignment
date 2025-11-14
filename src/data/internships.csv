@@ -1,2 +1,6 @@
 internshipID,title,description,level,preferredMajor,openDate,closeDate,status,companyName,repID,slotsTotal,slotsFilled,isVisible
 INT-076A717E,Basic CS V2,A basic job for Year 1s,BASIC,CSC,2025-12-01,2026-01-10,APPROVED,TechBros,representative@company.com,5,0,true
+INT-7414F18A,VR Development,Develop VR tools,ADVANCED,CSC,2025-11-10,2025-11-24,APPROVED,Meta,demo@meta.com,3,0,true
+INT-0D56017E,Advanced CS,An advanced job for Year 3-4,ADVANCED,CSC,2025-11-10,2025-11-21,APPROVED,Google,rep@google.com,3,0,true
+INT-51832732,AR Developer,efgh,BASIC,CSC,2025-11-10,2025-11-19,APPROVED,Meta,demo@meta.com,4,1,true
+INT-196AC7C4,Advanced EEE,An advanced job for EEE,ADVANCED,EEE,2025-11-11,2025-11-21,APPROVED,Google,rep@google.com,4,0,true

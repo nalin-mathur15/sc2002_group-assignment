@@ -63,7 +63,7 @@ public class Student extends User {
      * Checks if the student has accepted any internship placement.
      * @return true if an internship is accepted, false otherwise.
      */
-    public boolean hasAcceptedInternship() { return this.acceptedInternship != null; }
+    public boolean hasAcceptedInternship() { return !(this.acceptedInternship == null); }
     
     //setters
     

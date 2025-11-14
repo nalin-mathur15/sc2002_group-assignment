@@ -1,3 +1,4 @@
 userID,name,email,password,companyName,department,position,isApproved,internshipIDs
-representative@company.com,Albert Johnson,representative@company.com,password,TechBros,The Important Department,Important Position,true,INT-FC39D897;INT-F6CEDA1D;INT-076A717E
-rep@google.com,Google Representative,rep@google.com,password,Google,Google Maps,HR Manager,false,
+representative@company.com,Albert Johnson,representative@company.com,password,TechBros,The Important Department,Important Position,true,INT-076A717E
+rep@google.com,Google Representative,rep@google.com,password,Google,Google Maps,HR Manager,true,INT-0D56017E;INT-196AC7C4
+demo@meta.com,Jane Doe,demo@meta.com,newpass123,Meta,HR,Manager,true,INT-7414F18A;INT-51832732
